@@ -3,11 +3,23 @@
 @tailwind utilities;
 
 body {
-  /* background-color: black; */
   background-image: url('/wp.jpg');
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
+  /* background-repeat: no-repeat; */
+
+  /* background-color: #2d3436;
+  background-image: linear-gradient(315deg, #2d3436 0%, #000000 74%); */
+
+  /* background: linear-gradient(
+    115deg,
+    rgb(0, 0, 0) 5.8%,
+    rgb(178, 14, 14) 112.6%
+  ); */
+
+  /* background-color: #8ec5fc;
+  background-image: linear-gradient(62deg, #8ec5fc 0%, #e0c3fc 100%); */
+
   height: 100vh;
   color: white;
 }
