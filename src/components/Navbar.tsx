@@ -4,6 +4,7 @@ import GlassCard from './GlassCard';
 export default function Navbar() {
   return (
     <>
+      {/* Needs asChild prop */}
       <GlassCard className="p-4">
         <nav>
           <div className="container flex justify-between">
