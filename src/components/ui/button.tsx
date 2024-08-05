@@ -13,7 +13,7 @@ const buttonVariants = cva(
       variant: {
         // default: 'bg-stone-900 text-stone-50 shadow hover:bg-stone-900/90',
         default:
-          'bg-zinc-900 backdrop-filter backdrop-blur-sm bg-opacity-75 hover:bg-opacity-65',
+          'bg-zinc-900 backdrop-filter backdrop-blur-sm bg-opacity-60 hover:bg-opacity-70',
         // destructive: 'bg-red-500 text-stone-50 shadow-sm hover:bg-red-500/90',
         destructive:
           'bg-red-800 backdrop-filter backdrop-blur-sm bg-opacity-75 hover:bg-opacity-65',

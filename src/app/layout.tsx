@@ -16,10 +16,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} h-full`}>
-        <div className="flex h-screen flex-col border">
+      <body className={`${inter.className} `}>
+        <div className="flex h-screen flex-col">
           <Navbar />
-          {children}
+          <div className="flex-1 overflow-auto">
+            {children}
+            <footer>hi</footer>
+          </div>
           {/* <div className="border">hi</div> */}
           {/* <div className="flex-1 border">hello</div> */}
         </div>
