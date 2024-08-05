@@ -43,7 +43,7 @@ export default function Home() {
         <Button>Hello</Button>
       </div> */}
 
-      <div className="h-screen w-full overflow-auto border">
+      <div className="w-full flex-1 overflow-auto border">
         <div className="flex flex-col gap-4">
           <Button onClick={() => scrollToSection('hello')}>
             Scroll to hello
