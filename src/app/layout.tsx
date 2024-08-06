@@ -19,10 +19,14 @@ export default function RootLayout({
       <body className={`${inter.className} flex h-screen flex-col`}>
         <Navbar />
         <div className="flex-1 overflow-auto">
-          <div className="flex h-full flex-col justify-between">
+          {/* <div className="flex h-full flex-col justify-between">
             <main>{children}</main>
-            <footer className="">hello</footer>
-          </div>
+            <footer className="border">hello</footer>
+          </div> */}
+          {/* <main className="">{children}</main>
+          <footer className="border">hello</footer> */}
+          {children}
+          <footer className="border">hello</footer>
         </div>
       </body>
     </html>

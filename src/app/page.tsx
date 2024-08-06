@@ -17,7 +17,7 @@ export default function Home() {
 
   return (
     <>
-      {/* <div className="flex h-full items-center justify-center">
+      <div className="flex h-full items-center justify-center border">
         <GlassCard className="flex flex-col items-center justify-center gap-8 rounded-md border p-16 sm:flex-row">
           <Avatar className="h-48 w-48 sm:h-64 sm:w-64">
             <AvatarImage src="https://avatars.githubusercontent.com/u/100104016?v=4" />
@@ -31,7 +31,7 @@ export default function Home() {
             <p>and these are my guides/tutorials :)</p>
           </div>
         </GlassCard>
-      </div> */}
+      </div>
 
       <div className="flex flex-col gap-4">
         <Button onClick={() => scrollToSection('hello')}>
