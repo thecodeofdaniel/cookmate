@@ -9,7 +9,7 @@ export default function GlassCard({ children, className }: GlassCardProps) {
   return (
     <div
       className={cn(
-        'bg-zinc-900 bg-opacity-70 shadow-lg backdrop-blur-sm',
+        'bg-zinc-900 bg-opacity-20 shadow-lg backdrop-blur-sm',
         className,
       )}
     >
