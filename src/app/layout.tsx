@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/Navbar';
 
+import GlassCard from '@/components/GlassCard';
+
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -18,15 +20,18 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} flex h-screen flex-col`}>
         <Navbar />
+        {/* Take rest of space taken from navbar */}
         <div className="flex-1 overflow-auto">
-          {/* <div className="flex h-full flex-col justify-between">
-            <main>{children}</main>
-            <footer className="border">hello</footer>
-          </div> */}
-          {/* <main className="">{children}</main>
-          <footer className="border">hello</footer> */}
-          {children}
-          <footer className="border">hello</footer>
+          {/* Inside that flex-1 make it take the full height */}
+          <div className="container flex h-full flex-col">
+            {/* Create GlassCard make it a flex container */}
+            <GlassCard className="my-4 flex flex-1 flex-col justify-between overflow-auto rounded-md">
+              {children}
+              <footer className="my-4 rounded-md border p-4 text-center">
+                CookMate - Designed by Daniel Rubio
+              </footer>
+            </GlassCard>
+          </div>
         </div>
       </body>
     </html>
