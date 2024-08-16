@@ -1,4 +1,4 @@
-'use client';
+// 'use client';
 
 import { useSearchTextStore } from '@/providers/searchText-store-provider';
 
@@ -13,40 +13,47 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-export default function SearchForm() {
+import { fetchCategories } from '@/lib/fetch';
+
+export default async function SearchForm() {
   console.log('Render searchForm');
 
-  // const { searchText, setText } = useSearchTextStore((state) => state);
-
-  // const debouncedSearchText = useDebounce(searchText);
+  const categories = await fetchCategories();
 
   return (
     <>
       <div className="flex flex-col gap-2 sm:flex-row">
-        <Input
-          className="flex-2"
-          placeholder="Enter some ingredients (e.g. salt, pepper, chicken)"
-        />
-        <Select>
-          <SelectTrigger className="flex-1">
-            <SelectValue placeholder="Select Category" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="light">Light</SelectItem>
-            <SelectItem value="dark">Dark</SelectItem>
-            <SelectItem value="system">System</SelectItem>
-          </SelectContent>
-        </Select>
-        <Select>
-          <SelectTrigger className="flex-1">
-            <SelectValue placeholder="Select Location" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="light">Light</SelectItem>
-            <SelectItem value="dark">Dark</SelectItem>
-            <SelectItem value="system">System</SelectItem>
-          </SelectContent>
-        </Select>
+        <div className="flex-2">
+          <Input placeholder="Enter some ingredients (e.g. salt, pepper, chicken)" />
+        </div>
+        <div className="flex-1">
+          <Select>
+            <SelectTrigger>
+              <SelectValue placeholder="Select Category (Any)" />
+            </SelectTrigger>
+            <SelectContent>
+              {categories.map((category) => {
+                return (
+                  <SelectItem key={category} value={category.toLowerCase()}>
+                    {category}
+                  </SelectItem>
+                );
+              })}
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="flex-1">
+          <Select>
+            <SelectTrigger>
+              <SelectValue placeholder="Select Location" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="light">Light</SelectItem>
+              <SelectItem value="dark">Dark</SelectItem>
+              <SelectItem value="system">System</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
     </>
   );
