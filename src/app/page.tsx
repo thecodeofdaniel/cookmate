@@ -22,11 +22,10 @@ export default function Home() {
   };
 
   // const searchText = useAppSelector(selectSearchText);
+  // const dispatch = useAppDispatch();
 
   const { searchText, setText } = useSearchTextStore((state) => state);
   const debouncedSearchText = useDebounce(searchText);
-
-  // const dispatch = useAppDispatch();
 
   return (
     <div className="m-4">
@@ -38,6 +37,7 @@ export default function Home() {
         }}
       />
       <h2>{debouncedSearchText}</h2>
+      <HomePage />
     </div>
     // <div className="m-4">
     //   <Input
