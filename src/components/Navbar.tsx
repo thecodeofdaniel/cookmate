@@ -1,5 +1,5 @@
-import Card from './Card';
 import GlassCard from './GlassCard';
+import Link from 'next/link';
 
 export default function Navbar() {
   return (
@@ -8,10 +8,11 @@ export default function Navbar() {
       <GlassCard className="p-4">
         <nav>
           <div className="container flex justify-between">
-            <h1>Guides/Tutorials</h1>
+            <Link href="/">CookMate</Link>
             <ul className="flex gap-8">
-              <li>About</li>
-              <li>Blog</li>
+              <li>
+                <Link href="/blog">Saved Recipes</Link>
+              </li>
             </ul>
           </div>
           {/* <aside>

@@ -37,49 +37,46 @@ export default function Home() {
         }}
       />
       <h2>{debouncedSearchText}</h2>
-      <HomePage />
+      {/* <HomePage />
+      <Input
+        placeholder="Enter some ingredients (e.g. salt, pepper, chicken)"
+        value={searchText}
+        onChange={(e) => {
+          dispatch(setSearchText(e.target.value));
+        }}
+      />
+      <h2>{debouncedSearchText}</h2> */}
+      <div className="flex flex-col gap-4">
+        <Button onClick={() => scrollToSection('hello')}>
+          Scroll to hello
+        </Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button className="text-red-500" id="hello">
+          Here
+        </Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+      </div>
     </div>
-    // <div className="m-4">
-    //   <Input
-    //     placeholder="Enter some ingredients (e.g. salt, pepper, chicken)"
-    //     value={searchText}
-    //     onChange={(e) => {
-    //       dispatch(setSearchText(e.target.value));
-    //     }}
-    //   />
-    //   <h2>{debouncedSearchText}</h2>
-    //   <div className="flex flex-col gap-4">
-    //     <Button onClick={() => scrollToSection('hello')}>
-    //       Scroll to hello
-    //     </Button>
-    //     <Button>Hello</Button>
-    //     <Button>Hello</Button>
-    //     <Button>Hello</Button>
-    //     <Button className="text-red-500" id="hello">
-    //       Here
-    //     </Button>
-    //     <Button>Hello</Button>
-    //     <Button>Hello</Button>
-    //     <Button>Hello</Button>
-    //     <Button>Hello</Button>
-    //     <Button>Hello</Button>
-    //     <Button>Hello</Button>
-    //     <Button>Hello</Button>
-    //     <Button>Hello</Button>
-    //     <Button>Hello</Button>
-    //     <Button>Hello</Button>
-    //     <Button>Hello</Button>
-    //     <Button>Hello</Button>
-    //     <Button>Hello</Button>
-    //     <Button>Hello</Button>
-    //     <Button>Hello</Button>
-    //     <Button>Hello</Button>
-    //     <Button>Hello</Button>
-    //     <Button>Hello</Button>
-    //     <Button>Hello</Button>
-    //     <Button>Hello</Button>
-    //   </div>
-    // </div>
-    // <HomePage />
   );
 }
