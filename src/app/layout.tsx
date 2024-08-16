@@ -6,6 +6,8 @@ import Navbar from '@/components/Navbar';
 import GlassCard from '@/components/GlassCard';
 
 import StoreProvider from './StoreProvider';
+import { CounterStoreProvider } from '@/providers/counter-store-provider';
+import { SearchTextStoreProvider } from '@/providers/searchText-store-provider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -28,14 +30,18 @@ export default function RootLayout({
           {/* Inside that flex-1 make it take the full height */}
           <div className="container flex h-full flex-col">
             {/* Create GlassCard make it a flex container */}
-            <StoreProvider>
-              <GlassCard className="my-4 flex flex-1 flex-col justify-between overflow-auto rounded-md">
-                {children}
-                <footer className="my-4 rounded-md border p-4 text-center">
-                  CookMate - Designed by Daniel Rubio
-                </footer>
-              </GlassCard>
-            </StoreProvider>
+            <CounterStoreProvider>
+              <SearchTextStoreProvider>
+                <StoreProvider>
+                  <GlassCard className="my-4 flex flex-1 flex-col justify-between overflow-auto rounded-md">
+                    {children}
+                    <footer className="my-4 rounded-md border p-4 text-center">
+                      CookMate - Designed by Daniel Rubio
+                    </footer>
+                  </GlassCard>
+                </StoreProvider>
+              </SearchTextStoreProvider>
+            </CounterStoreProvider>
           </div>
         </div>
       </body>
