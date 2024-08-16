@@ -1,5 +1,3 @@
-// 'use client';
-
 import { Button } from '@/components/ui/button';
 import SearchForm from '@/components/SearchForm';
 import Count from '@/components/Count';
@@ -18,8 +16,8 @@ export default function Home() {
       <SearchForm />
       <Count />
       <div className="flex flex-col gap-4">
-        {/* <Button onClick={() => scrollToSection('hello')}>
-          Scroll to hello
+        {/* <Button onClick={() => scrollToSection('hello')}>z
+        Scroll to hello
         </Button> */}
         <Button>Hello</Button>
         <Button>Hello</Button>
