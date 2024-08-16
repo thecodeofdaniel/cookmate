@@ -5,7 +5,9 @@ export default function Provider({ children }: { children: React.ReactNode }) {
   return (
     <>
       <CounterStoreProvider>
-        <SearchTextStoreProvider>{children}</SearchTextStoreProvider>
+        <SearchTextStoreProvider>
+          <>{children}</>
+        </SearchTextStoreProvider>
       </CounterStoreProvider>
     </>
   );

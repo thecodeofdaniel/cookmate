@@ -1,9 +1,8 @@
-// src/components/pages/home-page.tsx
 'use client';
 
 import { useCounterStore } from '@/providers/counter-store-provider';
 
-export function HomePage() {
+export default function Count() {
   const { count, incrementCount, decrementCount } = useCounterStore(
     (state) => state,
   );

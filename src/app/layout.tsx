@@ -31,15 +31,15 @@ export default function RootLayout({
           {/* Inside that flex-1 make it take the full height */}
           <div className="container flex h-full flex-col">
             <Provider>
-              <StoreProvider>
-                {/* Create GlassCard make it a flex container */}
-                <GlassCard className="my-4 flex flex-1 flex-col justify-between overflow-auto rounded-md">
-                  {children}
-                  <footer className="my-4 rounded-md border p-4 text-center">
-                    CookMate - Designed by Daniel Rubio
-                  </footer>
-                </GlassCard>
-              </StoreProvider>
+              {/* <StoreProvider> */}
+              {/* Create GlassCard make it a flex container */}
+              <GlassCard className="my-4 flex flex-1 flex-col justify-between overflow-auto rounded-md">
+                {children}
+                <footer className="my-4 rounded-md border p-4 text-center">
+                  CookMate - Designed by Daniel Rubio
+                </footer>
+              </GlassCard>
+              {/* </StoreProvider> */}
             </Provider>
           </div>
         </div>
