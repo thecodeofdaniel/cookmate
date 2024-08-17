@@ -13,12 +13,13 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-import { fetchCategories } from '@/lib/fetch';
+import { fetchCategories, fetchAreas } from '@/lib/fetch';
 
 export default async function SearchForm() {
   console.log('Render searchForm');
 
   const categories = await fetchCategories();
+  const areas = await fetchAreas();
 
   return (
     <>
@@ -29,7 +30,7 @@ export default async function SearchForm() {
         <div className="flex-1">
           <Select>
             <SelectTrigger>
-              <SelectValue placeholder="Select Category (Any)" />
+              <SelectValue placeholder="Select Category (All)" />
             </SelectTrigger>
             <SelectContent>
               {categories.map((category) => {
@@ -45,12 +46,16 @@ export default async function SearchForm() {
         <div className="flex-1">
           <Select>
             <SelectTrigger>
-              <SelectValue placeholder="Select Location" />
+              <SelectValue placeholder="Select Area (All)" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="light">Light</SelectItem>
-              <SelectItem value="dark">Dark</SelectItem>
-              <SelectItem value="system">System</SelectItem>
+              {areas.map((area) => {
+                return (
+                  <SelectItem key={area} value={area.toLowerCase()}>
+                    {area}
+                  </SelectItem>
+                );
+              })}
             </SelectContent>
           </Select>
         </div>
