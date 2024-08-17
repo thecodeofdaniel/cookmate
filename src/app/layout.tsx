@@ -9,6 +9,7 @@ import StoreProvider from './StoreProvider';
 // import { CounterStoreProvider } from '@/providers/counter-store-provider';
 // import { SearchTextStoreProvider } from '@/providers/searchText-store-provider';
 import Provider from './provider';
+import TanStackProvider from './tanstack-provider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -33,12 +34,14 @@ export default function RootLayout({
             <Provider>
               {/* <StoreProvider> */}
               {/* Create GlassCard make it a flex container */}
-              <GlassCard className="my-4 flex flex-1 flex-col justify-between overflow-auto rounded-md">
-                {children}
-                <footer className="my-4 rounded-md border p-4 text-center">
-                  CookMate - Designed by Daniel Rubio
-                </footer>
-              </GlassCard>
+              <TanStackProvider>
+                <GlassCard className="my-4 flex flex-1 flex-col justify-between overflow-auto rounded-md">
+                  {children}
+                  <footer className="my-4 rounded-md border p-4 text-center">
+                    CookMate - Designed by Daniel Rubio
+                  </footer>
+                </GlassCard>
+              </TanStackProvider>
               {/* </StoreProvider> */}
             </Provider>
           </div>

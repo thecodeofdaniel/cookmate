@@ -14,7 +14,15 @@ type AreasApiResponse = {
   }[];
 };
 
+function delay(ms: number = 2000) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+
 export async function fetchCategories(): Promise<string[]> {
+  await delay();
+
   const response = await fetch(CATEGORIES_URL, {
     cache: 'force-cache',
     // next: { revalidate: 3600 },

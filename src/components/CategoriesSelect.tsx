@@ -1,3 +1,7 @@
+'use client';
+
+import { useQuery } from '@tanstack/react-query';
+
 import {
   Select,
   SelectContent,
@@ -8,8 +12,14 @@ import {
 
 import { fetchCategories } from '@/lib/fetch';
 
-export default async function CategoriesSelect() {
-  const categories = await fetchCategories();
+export default function CategoriesSelect() {
+  console.log('Render: CategoriesSelect');
+
+  const { data: categories, isLoading } = useQuery({
+    queryKey: ['category'],
+    queryFn: () => fetchCategories(),
+    staleTime: Infinity,
+  });
 
   return (
     <>
@@ -18,13 +28,15 @@ export default async function CategoriesSelect() {
           <SelectValue placeholder="Select Category (All)" />
         </SelectTrigger>
         <SelectContent>
-          {categories.map((category) => {
-            return (
-              <SelectItem key={category} value={category.toLowerCase()}>
-                {category}
-              </SelectItem>
-            );
-          })}
+          {isLoading && <p>Please wait...</p>}
+          {!isLoading &&
+            categories?.map((category) => {
+              return (
+                <SelectItem key={category} value={category.toLowerCase()}>
+                  {category}
+                </SelectItem>
+              );
+            })}
         </SelectContent>
       </Select>
     </>

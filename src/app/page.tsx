@@ -22,7 +22,9 @@ export default function Home() {
         placeholder="Enter some ingredients (e.g. salt, pepper, chicken)"
         name="ingredients"
       />
-      <div className="flex-1">{/* <CategoriesSelect /> */}</div>
+      <div className="flex-1">
+        <CategoriesSelect />
+      </div>
       <div className="flex-1">{/* <AreasSelect /> */}</div>
       <Button>Search</Button>
     </form>
