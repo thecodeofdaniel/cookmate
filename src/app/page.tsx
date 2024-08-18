@@ -5,11 +5,18 @@ import { Input } from '@/components/ui/input';
 
 import CategoriesSelect from '@/components/CategoriesSelect';
 import AreasSelect from '@/components/AreasSelect';
+import SelectForm from '@/components/SelectForm';
 import FormPage from './form';
+import { ToastDemo } from '@/components/ToastDemo';
 
 export default function Home() {
   return (
-    <FormPage />
+    // <FormPage />
+    <>
+      <SelectForm />
+      <ToastDemo />
+    </>
+
     // <form
     //   className="m-4 flex flex-col gap-2 sm:flex-row"
     //   onSubmit={handleSubmit}

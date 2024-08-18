@@ -11,6 +11,11 @@ import {
 } from '@/components/ui/select';
 
 import { fetchCategories } from '@/lib/fetch';
+// import { type UseFormRegister } from 'react-hook-form';
+
+// type CategoriesSelectProps = {
+//   register: UseFormRegister<FormData>;
+// };
 
 export default function CategoriesSelect() {
   console.log('Render: CategoriesSelect');

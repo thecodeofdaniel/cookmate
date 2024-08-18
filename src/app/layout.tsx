@@ -8,8 +8,10 @@ import GlassCard from '@/components/GlassCard';
 import StoreProvider from './StoreProvider';
 // import { CounterStoreProvider } from '@/providers/counter-store-provider';
 // import { SearchTextStoreProvider } from '@/providers/searchText-store-provider';
-import Provider from './provider';
+import ZustandProvider from './zustand-provider';
 import TanStackProvider from './tanstack-provider';
+
+import { Toaster } from '@/components/ui/toaster';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -31,9 +33,7 @@ export default function RootLayout({
         <div className="flex-1 overflow-auto">
           {/* Inside that flex-1 make it take the full height */}
           <div className="container flex h-full flex-col">
-            <Provider>
-              {/* <StoreProvider> */}
-              {/* Create GlassCard make it a flex container */}
+            <ZustandProvider>
               <TanStackProvider>
                 <GlassCard className="my-4 flex flex-1 flex-col justify-between overflow-auto rounded-md">
                   {children}
@@ -42,11 +42,21 @@ export default function RootLayout({
                   </footer>
                 </GlassCard>
               </TanStackProvider>
-              {/* </StoreProvider> */}
-            </Provider>
+            </ZustandProvider>
           </div>
         </div>
+        <Toaster />
       </body>
     </html>
   );
+
+  // return (
+  //   <html lang="en">
+  //     <head />
+  //     <body>
+  //       <main>{children}</main>
+  //       <Toaster />
+  //     </body>
+  //   </html>
+  // );
 }

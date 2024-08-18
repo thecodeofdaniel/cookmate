@@ -2,9 +2,13 @@
 
 import { useForm, SubmitHandler } from 'react-hook-form';
 
+import CategoriesSelect from '@/components/CategoriesSelect';
+
 type FormData = {
   firstName: string;
   lastName: string;
+  category: string;
+  cars: string;
 };
 
 export default function FormPage() {
@@ -16,7 +20,16 @@ export default function FormPage() {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <label>First Name</label>
-      <input {...register('firstName')} className="text-black" />
+      {/* <input {...register('firstName')} className="text-black" /> */}
+      {/* <AreasSelect /> */}
+      {/* <input {...register('category')} /> */}
+      {/* <CategoriesSelect {...register('category')} /> */}
+      <select id="cars" {...register('cars')}>
+        <option value="volvo">Volvo</option>
+        <option value="saab">Saab</option>
+        <option value="mercedes">Mercedes</option>
+        <option value="audi">Audi</option>
+      </select>
       <label>Last Name</label>
       <input {...register('lastName')} className="text-black" />
       {/* <button
