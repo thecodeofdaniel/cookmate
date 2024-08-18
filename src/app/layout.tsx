@@ -30,33 +30,20 @@ export default function RootLayout({
       <body className={`${inter.className} flex h-screen flex-col`}>
         <Navbar />
         {/* Take rest of space taken from navbar */}
-        <div className="flex-1 overflow-auto">
+        <main className="flex-1">
           {/* Inside that flex-1 make it take the full height */}
-          <div className="container flex h-full flex-col">
+          <section className="container flex h-full flex-col">
             <ZustandProvider>
               <TanStackProvider>
                 <GlassCard className="my-4 flex flex-1 flex-col justify-between overflow-auto rounded-md">
                   {children}
-                  <footer className="my-4 rounded-md border p-4 text-center">
-                    CookMate - Designed by Daniel Rubio
-                  </footer>
                 </GlassCard>
               </TanStackProvider>
             </ZustandProvider>
-          </div>
-        </div>
+          </section>
+        </main>
         <Toaster />
       </body>
     </html>
   );
-
-  // return (
-  //   <html lang="en">
-  //     <head />
-  //     <body>
-  //       <main>{children}</main>
-  //       <Toaster />
-  //     </body>
-  //   </html>
-  // );
 }
