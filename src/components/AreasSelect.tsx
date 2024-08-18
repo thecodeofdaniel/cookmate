@@ -1,5 +1,8 @@
+'use client';
+
+import { useQuery } from '@tanstack/react-query';
+
 import {
-  Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
@@ -8,25 +11,31 @@ import {
 
 import { fetchAreas } from '@/lib/fetch';
 
-export default async function AreasSelect() {
-  const areas = await fetchAreas();
+export default function AreasSelect() {
+  console.log('Render: AreasSelect');
+
+  const { data: areas, isLoading } = useQuery({
+    queryKey: ['area'],
+    queryFn: () => fetchAreas(),
+    staleTime: Infinity,
+  });
 
   return (
     <>
-      <Select>
-        <SelectTrigger>
-          <SelectValue placeholder="Select Area (All)" />
-        </SelectTrigger>
-        <SelectContent>
-          {areas.map((area) => {
+      <SelectTrigger>
+        <SelectValue placeholder="Select Area (All)" />
+      </SelectTrigger>
+      <SelectContent>
+        {isLoading && <p>Please wait...</p>}
+        {!isLoading &&
+          areas?.map((area) => {
             return (
               <SelectItem key={area} value={area.toLowerCase()}>
                 {area}
               </SelectItem>
             );
           })}
-        </SelectContent>
-      </Select>
+      </SelectContent>
     </>
   );
 }
