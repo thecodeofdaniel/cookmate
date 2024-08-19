@@ -12,7 +12,7 @@ import {
 import { fetchAreas } from '@/lib/fetch';
 
 export default function AreasSelect() {
-  console.log('Render: AreasSelect');
+  // console.log('Render: AreasSelect');
 
   const { data: areas, isLoading } = useQuery({
     queryKey: ['area'],
@@ -30,7 +30,7 @@ export default function AreasSelect() {
         {!isLoading &&
           areas?.map((area) => {
             return (
-              <SelectItem key={area} value={area.toLowerCase()}>
+              <SelectItem key={area} value={area}>
                 {area}
               </SelectItem>
             );

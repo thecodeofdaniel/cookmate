@@ -2,6 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { ErrorMessage } from '@hookform/error-message';
 import { z } from 'zod';
 
 // Shadcn/UI
@@ -21,46 +22,36 @@ import { toast } from '@/components/ui/use-toast';
 import CategoriesSelect from './CategoriesSelect';
 import AreasSelect from './AreasSelect';
 import { extractIngredients } from '@/lib/utils';
+import { fetchRecipes } from '@/lib/fetch';
+
+const defaultValues = {
+  ingredients: '',
+  category: 'None',
+  area: 'None',
+};
 
 const FormSchema = z.object({
-  // ingredients: z.string().trim().min(1, {
-  //   message: 'At least enter one ingredient',
-  // }),
-  // category: z.string({
-  //   required_error: 'Please select a category',
-  // }),
-  // area: z.string({
-  //   required_error: 'Please select an area',
-  // }),
-  // ingredients: z.string().trim().min(1, {
-  //   message: 'At least enter one ingredient',
-  // }),
-  ingredients: z.union([
-    z.string().trim().min(3, {
-      message: 'At least enter one ingredient',
-    }),
-    z.array(z.string()),
-  ]),
+  ingredients: z.string().optional().default(defaultValues.ingredients),
   category: z.string().optional(),
   area: z.string().optional(),
 });
 
 export default function SelectForm() {
-  console.log('Render: SelectForm');
+  // console.log('Render: SelectForm');
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    defaultValues: {
-      ingredients: '',
-    },
+    defaultValues: defaultValues,
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
+  // const [generalError, setGeneralError] = useState(false);
 
-    data.ingredients = extractIngredients(data.ingredients.toString());
-    if (data.area === undefined) data.area = 'any';
-    if (data.category === undefined) data.category = 'any';
+  function onSubmit(data: z.infer<typeof FormSchema>) {
+    // console.log(errors);
+
+    // data.ingredients = extractIngredients(data.ingredients?.toString() ?? '');
+
+    // fetchRecipes(data.ingredients, data.category, data.area);
 
     toast({
       title: 'You submitted the following values:',
@@ -89,6 +80,10 @@ export default function SelectForm() {
                 <Input
                   placeholder="Enter some ingredients (e.g. salt, pepper, chicken)"
                   {...field}
+                  disabled={
+                    form.getValues('category') !== defaultValues.category ||
+                    form.getValues('area') !== defaultValues.area
+                  }
                 />
               </FormControl>
             </FormItem>
@@ -101,7 +96,14 @@ export default function SelectForm() {
             <FormItem className="mt-auto flex-1">
               <FormLabel>Category</FormLabel>
               <FormMessage />
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select
+                onValueChange={field.onChange}
+                defaultValue={field.value}
+                disabled={
+                  form.getValues('ingredients') !== defaultValues.ingredients ||
+                  form.getValues('area') !== defaultValues.area
+                }
+              >
                 <CategoriesSelect />
               </Select>
             </FormItem>
@@ -115,13 +117,28 @@ export default function SelectForm() {
               {/* {!form.formState.errors.area && <FormLabel>Area</FormLabel>} */}
               <FormLabel>Area</FormLabel>
               <FormMessage />
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select
+                onValueChange={field.onChange}
+                defaultValue={field.value}
+                disabled={
+                  form.getValues('ingredients') !== defaultValues.ingredients ||
+                  form.getValues('category') !== defaultValues.category
+                }
+              >
                 <AreasSelect />
               </Select>
             </FormItem>
           )}
         />
-        <Button type="submit" className="mt-4 border md:mt-auto">
+        <Button
+          type="submit"
+          className="mt-4 border md:mt-auto"
+          disabled={
+            form.getValues('ingredients') === '' &&
+            form.getValues('category') === 'None' &&
+            form.getValues('area') === 'None'
+          }
+        >
           Submit
         </Button>
       </form>

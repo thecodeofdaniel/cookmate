@@ -12,7 +12,7 @@ import {
 import { fetchCategories } from '@/lib/fetch';
 
 export default function CategoriesSelect() {
-  console.log('Render: CategoriesSelect');
+  // console.log('Render: CategoriesSelect');
 
   const { data: categories, isLoading } = useQuery({
     queryKey: ['category'],
@@ -23,14 +23,14 @@ export default function CategoriesSelect() {
   return (
     <>
       <SelectTrigger>
-        <SelectValue placeholder="Select Category (All)" />
+        <SelectValue placeholder="Select Category (None)" />
       </SelectTrigger>
       <SelectContent>
         {isLoading && <p>Please wait...</p>}
         {!isLoading &&
           categories?.map((category) => {
             return (
-              <SelectItem key={category} value={category.toLowerCase()}>
+              <SelectItem key={category} value={category}>
                 {category}
               </SelectItem>
             );
