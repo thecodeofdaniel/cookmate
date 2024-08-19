@@ -12,3 +12,12 @@ const scrollToSection = (id: string) => {
     inline: 'nearest',
   });
 };
+
+export function extractIngredients(ingredients: string): string[] {
+  const items = ingredients
+    .split(',')
+    .map((item) => item.trim().replace(/\s+/g, '_'))
+    .filter((item) => item !== '');
+
+  return items;
+}

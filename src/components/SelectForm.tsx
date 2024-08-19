@@ -20,17 +20,29 @@ import { toast } from '@/components/ui/use-toast';
 
 import CategoriesSelect from './CategoriesSelect';
 import AreasSelect from './AreasSelect';
+import { extractIngredients } from '@/lib/utils';
 
 const FormSchema = z.object({
-  ingredients: z.string().trim().min(1, {
-    message: 'At least enter one ingredient',
-  }),
-  category: z.string({
-    required_error: 'Please select a category',
-  }),
-  area: z.string({
-    required_error: 'Please select an area',
-  }),
+  // ingredients: z.string().trim().min(1, {
+  //   message: 'At least enter one ingredient',
+  // }),
+  // category: z.string({
+  //   required_error: 'Please select a category',
+  // }),
+  // area: z.string({
+  //   required_error: 'Please select an area',
+  // }),
+  // ingredients: z.string().trim().min(1, {
+  //   message: 'At least enter one ingredient',
+  // }),
+  ingredients: z.union([
+    z.string().trim().min(3, {
+      message: 'At least enter one ingredient',
+    }),
+    z.array(z.string()),
+  ]),
+  category: z.string().optional(),
+  area: z.string().optional(),
 });
 
 export default function SelectForm() {
@@ -45,6 +57,11 @@ export default function SelectForm() {
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     console.log(data);
+
+    data.ingredients = extractIngredients(data.ingredients.toString());
+    if (data.area === undefined) data.area = 'any';
+    if (data.category === undefined) data.category = 'any';
+
     toast({
       title: 'You submitted the following values:',
       description: (
