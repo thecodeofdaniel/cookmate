@@ -21,19 +21,18 @@ import { toast } from '@/components/ui/use-toast';
 
 import CategoriesSelect from './CategoriesSelect';
 import AreasSelect from './AreasSelect';
-import { extractIngredients } from '@/lib/utils';
 import { fetchRecipes } from '@/lib/fetch';
 
-const defaultValues = {
+export const dfltFormValues = {
   ingredients: '',
   category: 'None',
   area: 'None',
 };
 
 const FormSchema = z.object({
-  ingredients: z.string().optional().default(defaultValues.ingredients),
-  category: z.string().optional(),
-  area: z.string().optional(),
+  ingredients: z.string().optional().default(dfltFormValues.ingredients),
+  category: z.string().optional().default(dfltFormValues.category),
+  area: z.string().optional().default(dfltFormValues.area),
 });
 
 export default function SelectForm() {
@@ -41,17 +40,13 @@ export default function SelectForm() {
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    defaultValues: defaultValues,
+    defaultValues: dfltFormValues,
   });
 
-  // const [generalError, setGeneralError] = useState(false);
+  const watchedIngredients = form.watch('ingredients');
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    // console.log(errors);
-
-    // data.ingredients = extractIngredients(data.ingredients?.toString() ?? '');
-
-    // fetchRecipes(data.ingredients, data.category, data.area);
+    fetchRecipes(data.ingredients, data.category, data.area);
 
     toast({
       title: 'You submitted the following values:',
@@ -81,8 +76,8 @@ export default function SelectForm() {
                   placeholder="Enter some ingredients (e.g. salt, pepper, chicken)"
                   {...field}
                   disabled={
-                    form.getValues('category') !== defaultValues.category ||
-                    form.getValues('area') !== defaultValues.area
+                    form.getValues('category') !== dfltFormValues.category ||
+                    form.getValues('area') !== dfltFormValues.area
                   }
                 />
               </FormControl>
@@ -100,8 +95,9 @@ export default function SelectForm() {
                 onValueChange={field.onChange}
                 defaultValue={field.value}
                 disabled={
-                  form.getValues('ingredients') !== defaultValues.ingredients ||
-                  form.getValues('area') !== defaultValues.area
+                  form.getValues('ingredients') !==
+                    dfltFormValues.ingredients ||
+                  form.getValues('area') !== dfltFormValues.area
                 }
               >
                 <CategoriesSelect />
@@ -114,15 +110,15 @@ export default function SelectForm() {
           name="area"
           render={({ field }) => (
             <FormItem className="mt-auto flex-1">
-              {/* {!form.formState.errors.area && <FormLabel>Area</FormLabel>} */}
               <FormLabel>Area</FormLabel>
               <FormMessage />
               <Select
                 onValueChange={field.onChange}
                 defaultValue={field.value}
                 disabled={
-                  form.getValues('ingredients') !== defaultValues.ingredients ||
-                  form.getValues('category') !== defaultValues.category
+                  form.getValues('ingredients') !==
+                    dfltFormValues.ingredients ||
+                  form.getValues('category') !== dfltFormValues.category
                 }
               >
                 <AreasSelect />
@@ -134,7 +130,7 @@ export default function SelectForm() {
           type="submit"
           className="mt-4 border md:mt-auto"
           disabled={
-            form.getValues('ingredients') === '' &&
+            watchedIngredients.length < 3 &&
             form.getValues('category') === 'None' &&
             form.getValues('area') === 'None'
           }

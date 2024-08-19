@@ -1,3 +1,6 @@
+import { extractIngredients } from './utils';
+import { dfltFormValues } from '@/components/SelectForm';
+
 const CATEGORIES_URL =
   'https://www.themealdb.com/api/json/v1/1/list.php?c=list';
 const AREAS_URL = 'https://www.themealdb.com/api/json/v1/1/list.php?a=list';
@@ -60,13 +63,20 @@ export async function fetchAreas(): Promise<string[]> {
 }
 
 export async function fetchRecipes(
-  ingredients: string[],
-  category: string | undefined,
-  area: string | undefined,
+  ingredients: string,
+  category: string,
+  area: string,
 ) {
-  let url = RECIPES + `?i=${ingredients.join(',')}`;
-  url += category !== 'All' ? `&c=${category}` : '';
-  url += area !== 'All' ? `&a=${area}` : '';
+  let url = RECIPES;
+
+  if (ingredients !== dfltFormValues.ingredients) {
+    const ingredientsArr = extractIngredients(ingredients);
+    url += `?i=${ingredientsArr.join(',')}`;
+  } else if (category !== dfltFormValues.category) {
+    url += `?c=${category}`;
+  } else if (area !== dfltFormValues.area) {
+    url += `?a=${area}`;
+  }
 
   console.log(url);
 }
