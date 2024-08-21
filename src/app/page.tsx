@@ -5,7 +5,9 @@ import SelectForm from '@/components/SelectForm';
 export default function Home() {
   return (
     <>
-      <SelectForm />
+      <div className="m-2">
+        <SelectForm />
+      </div>
     </>
   );
 }

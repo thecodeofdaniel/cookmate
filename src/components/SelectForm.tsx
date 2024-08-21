@@ -29,11 +29,26 @@ export const dfltFormValues = {
   area: 'None',
 };
 
-const FormSchema = z.object({
-  ingredients: z.string().optional().default(dfltFormValues.ingredients),
-  category: z.string().optional().default(dfltFormValues.category),
-  area: z.string().optional().default(dfltFormValues.area),
-});
+const FormSchema = z
+  .object({
+    ingredients: z.string().optional().default(dfltFormValues.ingredients),
+    category: z.string().optional().default(dfltFormValues.category),
+    area: z.string().optional().default(dfltFormValues.area),
+  })
+  .refine(
+    (data) => {
+      // what it should be!
+      const filledFields = [
+        data.ingredients !== dfltFormValues.ingredients,
+        data.category !== dfltFormValues.category,
+        data.area !== dfltFormValues.area,
+      ].filter(Boolean).length;
+
+      return filledFields === 1;
+    },
+    // otherwise show this error
+    { message: 'One and only one field must be filled', path: ['formError'] },
+  );
 
 export default function SelectForm() {
   // console.log('Render: SelectForm');
@@ -43,9 +58,17 @@ export default function SelectForm() {
     defaultValues: dfltFormValues,
   });
 
+  type CustomFormErrors = typeof form.formState.errors & {
+    formError?: { message: string };
+  };
+
+  const customErrors = form.formState.errors as CustomFormErrors;
+
   const watchedIngredients = form.watch('ingredients');
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
+    // this function only runs when there's no errors
+
     fetchRecipes(data.ingredients, data.category, data.area);
 
     toast({
@@ -62,7 +85,7 @@ export default function SelectForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="mx-2 flex flex-col gap-2 md:flex-row md:items-center"
+        className="flex flex-col gap-2 md:flex-row md:items-center"
       >
         <FormField
           control={form.control}
@@ -138,6 +161,9 @@ export default function SelectForm() {
           Submit
         </Button>
       </form>
+      <p className="mt-2 text-[0.8rem] font-medium text-red-500 dark:text-red-900">
+        {customErrors.formError?.message}
+      </p>
     </Form>
   );
 }
