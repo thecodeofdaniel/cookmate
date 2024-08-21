@@ -8,6 +8,7 @@ export default function ShowRecipes({ url }: { url: string }) {
   const { data: recipes, isLoading } = useQuery({
     queryKey: ['recipes', url],
     queryFn: () => fetchRecipes(url),
+    staleTime: Infinity,
     enabled: !!url,
   });
 
