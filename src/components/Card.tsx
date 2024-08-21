@@ -22,7 +22,7 @@ import { toast } from '@/components/ui/use-toast';
 import CategoriesSelect from './CategoriesSelect';
 import AreasSelect from './AreasSelect';
 import { extractIngredients } from '@/lib/utils';
-import { fetchRecipes } from '@/lib/fetch';
+import { createFetchRecipesUrl } from '@/lib/fetch';
 
 // Define the schema for form validation
 const FormSchema = z.object({
@@ -66,7 +66,7 @@ export default function SelectForm() {
     }
 
     // Proceed with fetching recipes
-    fetchRecipes(data.ingredients, data.category, data.area);
+    createFetchRecipesUrl(data.ingredients, data.category, data.area);
 
     toast({
       title: 'You submitted the following values:',

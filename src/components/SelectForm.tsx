@@ -2,7 +2,6 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { ErrorMessage } from '@hookform/error-message';
 import { z } from 'zod';
 
 // Shadcn/UI
@@ -21,7 +20,8 @@ import { toast } from '@/components/ui/use-toast';
 
 import CategoriesSelect from './CategoriesSelect';
 import AreasSelect from './AreasSelect';
-import { fetchRecipes } from '@/lib/fetch';
+import { createFetchRecipesUrl } from '@/lib/fetch';
+import { useState } from 'react';
 
 export const dfltFormValues = {
   ingredients: '',
@@ -50,8 +50,15 @@ const FormSchema = z
     { message: 'One and only one field must be filled', path: ['formError'] },
   );
 
-export default function SelectForm() {
+export type FormValues = z.infer<typeof FormSchema>;
+
+type SelectFormProps = {
+  setUrl: React.Dispatch<React.SetStateAction<string>>;
+};
+
+export default function SelectForm({ setUrl }: SelectFormProps) {
   // console.log('Render: SelectForm');
+  const [prevUrl, setPrevUrl] = useState('');
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -66,19 +73,26 @@ export default function SelectForm() {
 
   const watchedIngredients = form.watch('ingredients');
 
+  // this function only runs when there's no errors
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    // this function only runs when there's no errors
+    const url = createFetchRecipesUrl(data);
 
-    fetchRecipes(data.ingredients, data.category, data.area);
+    if (url === prevUrl) {
+      console.log('Same url found');
+      return;
+    }
 
-    toast({
-      title: 'You submitted the following values:',
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+    setPrevUrl(url);
+    setUrl(url);
+
+    // toast({
+    //   title: 'You submitted the following values:',
+    //   description: (
+    //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+    //       <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+    //     </pre>
+    //   ),
+    // });
   }
 
   return (

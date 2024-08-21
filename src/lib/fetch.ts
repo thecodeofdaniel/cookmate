@@ -1,5 +1,5 @@
 import { extractIngredients } from './utils';
-import { dfltFormValues } from '@/components/SelectForm';
+import { dfltFormValues, FormValues } from '@/components/SelectForm';
 
 const CATEGORIES_URL =
   'https://www.themealdb.com/api/json/v1/1/list.php?c=list';
@@ -25,8 +25,18 @@ function delay(ms: number = 2000) {
   });
 }
 
+export type Recipe = {
+  strMeal: string;
+  strMealThumb: string;
+  idMeal: string;
+};
+
+type RecipesApiResponse = {
+  meals: Recipe[];
+};
+
 export async function fetchCategories(): Promise<string[]> {
-  await delay();
+  // await delay();
 
   const response = await fetch(CATEGORIES_URL, {
     cache: 'force-cache',
@@ -62,11 +72,27 @@ export async function fetchAreas(): Promise<string[]> {
   return formattedData;
 }
 
-export async function fetchRecipes(
-  ingredients: string,
-  category: string,
-  area: string,
-) {
+export async function fetchRecipes(url: string): Promise<Recipe[]> {
+  await delay();
+
+  const response = await fetch(url, {
+    cache: 'force-cache',
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.description);
+  }
+
+  const data: RecipesApiResponse = await response.json();
+  let formattedData = data['meals'];
+
+  return formattedData;
+}
+
+export function createFetchRecipesUrl(data: FormValues): string {
+  const { ingredients, category, area } = data;
+
   let url = RECIPES;
 
   if (ingredients !== dfltFormValues.ingredients) {
@@ -78,5 +104,5 @@ export async function fetchRecipes(
     url += `?a=${area}`;
   }
 
-  console.log(url);
+  return url;
 }
