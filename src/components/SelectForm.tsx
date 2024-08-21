@@ -31,7 +31,11 @@ export const dfltFormValues = {
 
 const FormSchema = z
   .object({
-    ingredients: z.string().optional().default(dfltFormValues.ingredients),
+    ingredients: z
+      .string()
+      .trim()
+      .optional()
+      .default(dfltFormValues.ingredients),
     category: z.string().optional().default(dfltFormValues.category),
     area: z.string().optional().default(dfltFormValues.area),
   })
@@ -167,7 +171,7 @@ export default function SelectForm({ setUrl }: SelectFormProps) {
           type="submit"
           className="mt-4 border md:mt-auto"
           disabled={
-            watchedIngredients.length < 3 &&
+            watchedIngredients.trim().length < 3 &&
             form.getValues('category') === 'None' &&
             form.getValues('area') === 'None'
           }
