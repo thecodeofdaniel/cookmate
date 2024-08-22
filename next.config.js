@@ -1,5 +1,12 @@
 module.exports = {
-  env: {
-    customKey: 'my-value',
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'www.themealdb.com',
+        port: '',
+        pathname: '/images/media/meals/*',
+      },
+    ],
   },
 };

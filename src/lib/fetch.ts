@@ -6,6 +6,7 @@ const CATEGORIES_URL =
 const AREAS_URL = 'https://www.themealdb.com/api/json/v1/1/list.php?a=list';
 
 const RECIPES = `https://www.themealdb.com/api/json/v2/${process.env.NEXT_PUBLIC_API_KEY}/filter.php`;
+const RECIPE_URL = `https://www.themealdb.com/api/json/v1/1/lookup.php`;
 
 type CategoriesApiResponse = {
   meals: {
@@ -25,14 +26,14 @@ function delay(ms: number = 2000) {
   });
 }
 
-export type Recipe = {
+export type TFetchedRecipe = {
   strMeal: string;
   strMealThumb: string;
   idMeal: string;
 };
 
-type RecipesApiResponse = {
-  meals: Recipe[];
+type TFetchedRecipesApiResponse = {
+  meals: TFetchedRecipe[];
 };
 
 export async function fetchCategories(): Promise<string[]> {
@@ -72,7 +73,7 @@ export async function fetchAreas(): Promise<string[]> {
   return formattedData;
 }
 
-export async function fetchRecipes(url: string): Promise<Recipe[]> {
+export async function fetchRecipes(url: string): Promise<TFetchedRecipe[]> {
   await delay();
 
   const response = await fetch(url, {
@@ -84,8 +85,30 @@ export async function fetchRecipes(url: string): Promise<Recipe[]> {
     throw new Error(errorData.description);
   }
 
-  const data: RecipesApiResponse = await response.json();
+  const data: TFetchedRecipesApiResponse = await response.json();
   let formattedData = data['meals'];
+
+  return formattedData;
+}
+
+// www.themealdb.com/api/json/v1/1/lookup.php?i=52952
+
+export async function fetchRecipe(id: string): Promise<TRecipe> {
+  const url = RECIPE_URL + '?i=' + id;
+
+  console.log(url);
+
+  const response = await fetch(url, {
+    cache: 'force-cache',
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.description);
+  }
+
+  const data: TRecipeApiResponse = await response.json();
+  let formattedData = data['meals'][0];
 
   return formattedData;
 }
