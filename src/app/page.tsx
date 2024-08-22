@@ -9,7 +9,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="m-2">
+      <div className="m-2 border-2 border-green-500">
         <SelectForm setUrl={setUrl} />
         <ShowRecipes url={url} />
       </div>

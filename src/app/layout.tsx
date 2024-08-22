@@ -35,7 +35,7 @@ export default function RootLayout({
           <section className="container flex h-full flex-col">
             <ZustandProvider>
               <TanStackProvider>
-                <GlassCard className="my-4 flex flex-1 flex-col justify-between overflow-auto rounded-md">
+                <GlassCard className="my-4 flex flex-1 flex-col justify-between rounded-md">
                   {children}
                 </GlassCard>
               </TanStackProvider>

@@ -19,18 +19,18 @@ export default function ShowRecipes({ url }: { url: string }) {
   console.log(recipes);
 
   return (
-    <>
+    <div className="border">
       <p>URL: {url}</p>
       {isLoading && <p>Loading...</p>}
       {!isLoading && !recipes && url !== '' && <p>No recipes found!</p>}
       {!isLoading && recipes && (
-        <ul className="space-y-2">
+        <ul className="h-[75vh] space-y-2 overflow-auto border-2 border-yellow-500">
           {recipes?.map((recipe) => {
             return <Recipe key={recipe.idMeal} fetchedRecipe={recipe} />;
           })}
         </ul>
       )}
-    </>
+    </div>
   );
 }
 
