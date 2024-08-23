@@ -22,6 +22,7 @@ import CategoriesSelect from './CategoriesSelect';
 import AreasSelect from './AreasSelect';
 import { createFetchRecipesUrl } from '@/lib/fetch';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export const dfltFormValues = {
   ingredients: '',
@@ -57,12 +58,14 @@ const FormSchema = z
 export type FormValues = z.infer<typeof FormSchema>;
 
 type SelectFormProps = {
-  setUrl: React.Dispatch<React.SetStateAction<string>>;
+  // setUrl: React.Dispatch<React.SetStateAction<string>>;
+  searchParams: string;
 };
 
-export default function SelectForm({ setUrl }: SelectFormProps) {
+export default function SelectForm({ searchParams }: SelectFormProps) {
   // console.log('Render: SelectForm');
   const [prevUrl, setPrevUrl] = useState('');
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -79,15 +82,23 @@ export default function SelectForm({ setUrl }: SelectFormProps) {
 
   // this function only runs when there's no errors
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    const url = createFetchRecipesUrl(data);
+    const [url, _, params] = createFetchRecipesUrl(data);
 
-    if (url === prevUrl) {
-      console.log('Same url found');
-      return;
+    // console.log('Created params:', params);
+
+    // if (url === prevUrl) {
+    //   // console.log('Same url found');
+    //   return;
+    // }
+
+    // setPrevUrl(url);
+    // setUrl(url);
+
+    // console.log(params);
+
+    if (params) {
+      router.push(params);
     }
-
-    setPrevUrl(url);
-    setUrl(url);
 
     // toast({
     //   title: 'You submitted the following values:',

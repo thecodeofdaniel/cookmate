@@ -113,19 +113,26 @@ export async function fetchRecipe(id: string): Promise<TRecipe> {
   return formattedData;
 }
 
-export function createFetchRecipesUrl(data: FormValues): string {
+export function createFetchRecipesUrl(
+  data: FormValues,
+): [string, string, string] {
   const { ingredients, category, area } = data;
 
-  let url = RECIPES;
+  let baseUrl = RECIPES;
+  let apiParams = '';
+  let params = '';
 
   if (ingredients !== dfltFormValues.ingredients) {
     const ingredientsArr = extractIngredients(ingredients);
-    url += `?i=${ingredientsArr.join(',')}`;
+    apiParams = `?i=${ingredientsArr.join(',')}`;
+    params = `?i=${ingredientsArr.join('&i=')}`;
   } else if (category !== dfltFormValues.category) {
-    url += `?c=${category}`;
+    apiParams = `?c=${category}`;
+    params = `?c=${category}`;
   } else if (area !== dfltFormValues.area) {
-    url += `?a=${area}`;
+    apiParams = `?a=${area}`;
+    params = `?a=${area}`;
   }
 
-  return url;
+  return [`${baseUrl}${apiParams}`, apiParams, params];
 }
