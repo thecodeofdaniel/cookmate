@@ -175,8 +175,8 @@ export default function Search({ ingredients, category, area }: Props) {
           className="mt-4 border md:mt-auto"
           disabled={
             form.watch('ingredients').trim().length < 3 &&
-            form.getValues('category') === 'None' &&
-            form.getValues('area') === 'None'
+            form.watch('category') === 'None' &&
+            form.watch('area') === 'None'
           }
         >
           Submit
