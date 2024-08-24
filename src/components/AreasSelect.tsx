@@ -23,7 +23,7 @@ export default function AreasSelect() {
   return (
     <>
       <SelectTrigger>
-        <SelectValue placeholder="Select Area (All)" />
+        <SelectValue placeholder="Select Area (None)" />
       </SelectTrigger>
       <SelectContent>
         {isLoading && <p>Please wait...</p>}

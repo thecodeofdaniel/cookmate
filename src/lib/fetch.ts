@@ -91,29 +91,25 @@ export async function fetchRecipes(url: string): Promise<TFetchedRecipe[]> {
   return formattedData;
 }
 
-// export function createFetchRecipesUrl(
-//   data: FormValues,
-// ): [string, string, string] {
-//   const { ingredients, category, area } = data;
+export async function fetchSingleRecipe(id: string): Promise<TRecipe> {
+  const url = RECIPE_URL + '?i=' + id;
 
-//   let baseUrl = RECIPES;
-//   let apiParams = '';
-//   let params = '';
+  // console.log(url);
 
-//   if (ingredients !== dfltFormValues.ingredients) {
-//     const ingredientsArr = extractIngredients(ingredients);
-//     apiParams = `?i=${ingredientsArr.join(',')}`;
-//     params = `?i=${ingredientsArr.join('&i=')}`;
-//   } else if (category !== dfltFormValues.category) {
-//     apiParams = `?c=${category}`;
-//     params = `?c=${category}`;
-//   } else if (area !== dfltFormValues.area) {
-//     apiParams = `?a=${area}`;
-//     params = `?a=${area}`;
-//   }
+  const response = await fetch(url, {
+    cache: 'force-cache',
+  });
 
-//   return [`${baseUrl}${apiParams}`, apiParams, params];
-// }
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.description);
+  }
+
+  const data: TRecipeApiResponse = await response.json();
+  let formattedData = data['meals'][0];
+
+  return formattedData;
+}
 
 export function createURLfromParams(params: string): string {
   let url = RECIPES_URL;
@@ -134,6 +130,7 @@ export function createURLfromParams(params: string): string {
       break;
     default:
       url = '';
+      break;
   }
 
   return url;

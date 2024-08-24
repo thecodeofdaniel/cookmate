@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -56,7 +57,7 @@ const FormSchema = z
 export type FormValues = z.infer<typeof FormSchema>;
 
 type Props = {
-  ingredients: string[];
+  ingredients: string | null;
   category: string | null;
   area: string | null;
 };
@@ -64,25 +65,31 @@ type Props = {
 export default function Search({ ingredients, category, area }: Props) {
   const router = useRouter();
 
+  // On first reload intialize default values
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      ingredients:
-        ingredients.length > 0
-          ? ingredients.join(',')
-          : dfltFormValues.ingredients,
+      ingredients: ingredients ?? dfltFormValues.ingredients,
       category: category ?? dfltFormValues.category,
       area: area ?? dfltFormValues.area,
     },
   });
 
+  // Change values inside form if using prev and next browser
+  useEffect(() => {
+    const updatedValues = {
+      ingredients: ingredients ?? dfltFormValues.ingredients,
+      category: category ?? dfltFormValues.category,
+      area: area ?? dfltFormValues.area,
+    };
+
+    form.reset(updatedValues);
+  }, [ingredients, category, area]);
+
   type CustomFormErrors = typeof form.formState.errors & {
     formError?: { message: string };
   };
-
   const customErrors = form.formState.errors as CustomFormErrors;
-
-  const watchedIngredients = form.watch('ingredients');
 
   // this function only runs when there's no errors
   function onSubmit(data: z.infer<typeof FormSchema>) {
@@ -128,7 +135,8 @@ export default function Search({ ingredients, category, area }: Props) {
               <FormMessage />
               <Select
                 onValueChange={field.onChange}
-                defaultValue={field.value}
+                // defaultValue={field.value}
+                value={field.value}
                 disabled={
                   form.getValues('ingredients') !==
                     dfltFormValues.ingredients ||
@@ -149,7 +157,8 @@ export default function Search({ ingredients, category, area }: Props) {
               <FormMessage />
               <Select
                 onValueChange={field.onChange}
-                defaultValue={field.value}
+                // defaultValue={field.value}
+                value={field.value}
                 disabled={
                   form.getValues('ingredients') !==
                     dfltFormValues.ingredients ||
@@ -165,7 +174,7 @@ export default function Search({ ingredients, category, area }: Props) {
           type="submit"
           className="mt-4 border md:mt-auto"
           disabled={
-            watchedIngredients.trim().length < 3 &&
+            form.watch('ingredients').trim().length < 3 &&
             form.getValues('category') === 'None' &&
             form.getValues('area') === 'None'
           }

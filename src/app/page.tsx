@@ -18,13 +18,17 @@ export default function Home() {
   } else if (category) {
     params += '?c=' + category;
   } else if (area) {
-    params += '?a=' + category;
+    params += '?a=' + area;
   }
 
   return (
     <>
       <div className="m-2 border-2 border-green-500">
-        <Search ingredients={ingredients} category={category} area={area} />
+        <Search
+          ingredients={ingredients.length > 0 ? ingredients.join(',') : null}
+          category={category}
+          area={area}
+        />
         <Recipes params={params} />
       </div>
     </>

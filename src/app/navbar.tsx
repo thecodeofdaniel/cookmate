@@ -1,4 +1,4 @@
-import GlassCard from './GlassCard';
+import GlassCard from '../components/GlassCard';
 import Link from 'next/link';
 
 export default function Navbar() {

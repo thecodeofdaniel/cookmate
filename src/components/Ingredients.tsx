@@ -1,16 +1,3 @@
-// interface Meal {
-//   strIngredient1: string;
-//   strIngredient2: string;
-//   strIngredient3: string;
-//   // Add up to strIngredient20
-//   strIngredient20: string;
-//   // Other properties
-// }
-
-// interface Props {
-//   meal: Meal;
-// }
-
 export function Ingredients({ meal }: { meal: TRecipe }) {
   const ingredients = [];
 
