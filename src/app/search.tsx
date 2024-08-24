@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -14,15 +15,12 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from './ui/input';
+import { Input } from '../components/ui/input';
 import { Select } from '@/components/ui/select';
-import { toast } from '@/components/ui/use-toast';
 
-import CategoriesSelect from './CategoriesSelect';
-import AreasSelect from './AreasSelect';
-import { createFetchRecipesUrl } from '@/lib/fetch';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import CategoriesSelect from '../components/CategoriesSelect';
+import AreasSelect from '../components/AreasSelect';
+import { createFetchRecipesNextParams } from '@/lib/fetch';
 
 export const dfltFormValues = {
   ingredients: '',
@@ -57,19 +55,25 @@ const FormSchema = z
 
 export type FormValues = z.infer<typeof FormSchema>;
 
-type SelectFormProps = {
-  // setUrl: React.Dispatch<React.SetStateAction<string>>;
-  searchParams: string;
+type Props = {
+  ingredients: string[];
+  category: string | null;
+  area: string | null;
 };
 
-export default function SelectForm({ searchParams }: SelectFormProps) {
-  // console.log('Render: SelectForm');
-  const [prevUrl, setPrevUrl] = useState('');
+export default function Search({ ingredients, category, area }: Props) {
   const router = useRouter();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    defaultValues: dfltFormValues,
+    defaultValues: {
+      ingredients:
+        ingredients.length > 0
+          ? ingredients.join(',')
+          : dfltFormValues.ingredients,
+      category: category ?? dfltFormValues.category,
+      area: area ?? dfltFormValues.area,
+    },
   });
 
   type CustomFormErrors = typeof form.formState.errors & {
@@ -82,32 +86,11 @@ export default function SelectForm({ searchParams }: SelectFormProps) {
 
   // this function only runs when there's no errors
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    const [url, _, params] = createFetchRecipesUrl(data);
+    const nextParams = createFetchRecipesNextParams(data);
 
-    // console.log('Created params:', params);
-
-    // if (url === prevUrl) {
-    //   // console.log('Same url found');
-    //   return;
-    // }
-
-    // setPrevUrl(url);
-    // setUrl(url);
-
-    // console.log(params);
-
-    if (params) {
-      router.push(params);
+    if (nextParams) {
+      router.push(nextParams);
     }
-
-    // toast({
-    //   title: 'You submitted the following values:',
-    //   description: (
-    //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-    //       <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-    //     </pre>
-    //   ),
-    // });
   }
 
   return (

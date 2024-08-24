@@ -1,11 +1,11 @@
 import { extractIngredients } from './utils';
-import { dfltFormValues, FormValues } from '@/components/SelectForm';
+import { dfltFormValues, FormValues } from '../app/search';
 
 const CATEGORIES_URL =
   'https://www.themealdb.com/api/json/v1/1/list.php?c=list';
 const AREAS_URL = 'https://www.themealdb.com/api/json/v1/1/list.php?a=list';
 
-const RECIPES = `https://www.themealdb.com/api/json/v2/${process.env.NEXT_PUBLIC_API_KEY}/filter.php`;
+const RECIPES_URL = `https://www.themealdb.com/api/json/v2/${process.env.NEXT_PUBLIC_API_KEY}/filter.php`;
 const RECIPE_URL = `https://www.themealdb.com/api/json/v1/1/lookup.php`;
 
 type CategoriesApiResponse = {
@@ -91,48 +91,67 @@ export async function fetchRecipes(url: string): Promise<TFetchedRecipe[]> {
   return formattedData;
 }
 
-// www.themealdb.com/api/json/v1/1/lookup.php?i=52952
+// export function createFetchRecipesUrl(
+//   data: FormValues,
+// ): [string, string, string] {
+//   const { ingredients, category, area } = data;
 
-export async function fetchRecipe(id: string): Promise<TRecipe> {
-  const url = RECIPE_URL + '?i=' + id;
+//   let baseUrl = RECIPES;
+//   let apiParams = '';
+//   let params = '';
 
-  console.log(url);
+//   if (ingredients !== dfltFormValues.ingredients) {
+//     const ingredientsArr = extractIngredients(ingredients);
+//     apiParams = `?i=${ingredientsArr.join(',')}`;
+//     params = `?i=${ingredientsArr.join('&i=')}`;
+//   } else if (category !== dfltFormValues.category) {
+//     apiParams = `?c=${category}`;
+//     params = `?c=${category}`;
+//   } else if (area !== dfltFormValues.area) {
+//     apiParams = `?a=${area}`;
+//     params = `?a=${area}`;
+//   }
 
-  const response = await fetch(url, {
-    cache: 'force-cache',
-  });
+//   return [`${baseUrl}${apiParams}`, apiParams, params];
+// }
 
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.description);
+export function createURLfromParams(params: string): string {
+  let url = RECIPES_URL;
+  const prefix = params.substring(0, 3);
+
+  switch (prefix) {
+    case '?i=':
+      const withoutPrefix = params.replace('?i=', '');
+      const arr = withoutPrefix.split('&i=');
+      const apiParams = arr.join(',');
+      url += `${prefix}${apiParams}`;
+      break;
+    case '?c=':
+      url += params;
+      break;
+    case '?a=':
+      url += params;
+      break;
+    default:
+      url = '';
   }
 
-  const data: TRecipeApiResponse = await response.json();
-  let formattedData = data['meals'][0];
-
-  return formattedData;
+  return url;
 }
 
-export function createFetchRecipesUrl(
-  data: FormValues,
-): [string, string, string] {
+export function createFetchRecipesNextParams(data: FormValues): string {
   const { ingredients, category, area } = data;
 
-  let baseUrl = RECIPES;
-  let apiParams = '';
   let params = '';
 
   if (ingredients !== dfltFormValues.ingredients) {
     const ingredientsArr = extractIngredients(ingredients);
-    apiParams = `?i=${ingredientsArr.join(',')}`;
     params = `?i=${ingredientsArr.join('&i=')}`;
   } else if (category !== dfltFormValues.category) {
-    apiParams = `?c=${category}`;
     params = `?c=${category}`;
   } else if (area !== dfltFormValues.area) {
-    apiParams = `?a=${area}`;
     params = `?a=${area}`;
   }
 
-  return [`${baseUrl}${apiParams}`, apiParams, params];
+  return params;
 }

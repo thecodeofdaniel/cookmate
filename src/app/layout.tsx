@@ -5,11 +5,11 @@ import './globals.css';
 import Navbar from '@/components/Navbar';
 import GlassCard from '@/components/GlassCard';
 
-import StoreProvider from './StoreProvider';
+import StoreProvider from '../components/StoreProvider';
 // import { CounterStoreProvider } from '@/providers/counter-store-provider';
 // import { SearchTextStoreProvider } from '@/providers/searchText-store-provider';
-import ZustandProvider from './zustand-provider';
-import TanStackProvider from './tanstack-provider';
+import ZustandProvider from '../components/zustand-provider';
+import TanStackProvider from '../components/tanstack-provider';
 
 import { Toaster } from '@/components/ui/toaster';
 
