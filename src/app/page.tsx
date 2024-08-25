@@ -23,13 +23,17 @@ export default function Home() {
 
   return (
     <>
-      <div className="m-2 border-2 border-green-500">
+      <div className="m-2 flex flex-1 flex-col border-2 border-green-500">
         <Search
           ingredients={ingredients.length > 0 ? ingredients.join(',') : null}
           category={category}
           area={area}
+          className="flex flex-col gap-2 border-2 border-indigo-500 md:flex-row md:items-center"
         />
-        <Recipes params={params} />
+        <Recipes
+          params={params}
+          className="flex-1-px overflow-auto border-2 border-red-500"
+        />
       </div>
     </>
   );

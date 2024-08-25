@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import './globals.css';
+import '@/app/globals.css';
 
 import Navbar from './navbar';
 import GlassCard from '@/components/GlassCard';
@@ -9,6 +9,7 @@ import GlassCard from '@/components/GlassCard';
 import TanStackProvider from '../providers/tanstack-provider';
 
 import { Toaster } from '@/components/ui/toaster';
+import { Suspense } from 'react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -30,7 +31,9 @@ export default function RootLayout({
           <section className="container flex h-full flex-col">
             <TanStackProvider>
               <GlassCard className="my-4 flex flex-1 flex-col justify-between rounded-md">
-                {children}
+                <Suspense fallback={<p>Loading search content</p>}>
+                  {children}
+                </Suspense>
               </GlassCard>
             </TanStackProvider>
           </section>

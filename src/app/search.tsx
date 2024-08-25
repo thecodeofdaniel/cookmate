@@ -23,6 +23,8 @@ import CategoriesSelect from '../components/CategoriesSelect';
 import AreasSelect from '../components/AreasSelect';
 import { createFetchRecipesNextParams } from '@/lib/fetch';
 
+import { cn } from '@/lib/utils';
+
 export const dfltFormValues = {
   ingredients: '',
   category: 'None',
@@ -60,9 +62,15 @@ type Props = {
   ingredients: string | null;
   category: string | null;
   area: string | null;
+  className?: string;
 };
 
-export default function Search({ ingredients, category, area }: Props) {
+export default function Search({
+  ingredients,
+  category,
+  area,
+  className,
+}: Props) {
   const router = useRouter();
 
   // On first reload intialize default values
@@ -84,7 +92,7 @@ export default function Search({ ingredients, category, area }: Props) {
     };
 
     form.reset(updatedValues);
-  }, [ingredients, category, area]);
+  }, [form, ingredients, category, area]);
 
   type CustomFormErrors = typeof form.formState.errors & {
     formError?: { message: string };
@@ -102,10 +110,7 @@ export default function Search({ ingredients, category, area }: Props) {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-2 md:flex-row md:items-center"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} className={cn(className)}>
         <FormField
           control={form.control}
           name="ingredients"
