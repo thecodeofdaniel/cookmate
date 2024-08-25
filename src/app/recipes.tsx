@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
 
 import {
@@ -10,6 +11,15 @@ import {
   TFetchedRecipe as TRecipe,
 } from '@/lib/fetch';
 import Ingredients from '@/components/Ingredients';
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 
 import { cn } from '@/lib/utils';
 
@@ -35,15 +45,17 @@ export default function Recipes({ params, className }: Props) {
   return (
     <>
       {isLoading && <p className={cn(className)}>Loading recipes...</p>}
+      {!isLoading && !recipes && <p>No recipes found :(</p>}
       {!isLoading && recipes && (
-        <ul
-          className={cn(
-            className,
-            'flex flex-wrap justify-center gap-2',
-          )}
-        >
+        <ul className={cn(className, 'flex flex-wrap justify-center gap-2')}>
           {recipes?.map((recipe) => {
-            return <Recipe key={recipe.idMeal} fetchedRecipe={recipe} />;
+            return (
+              <Recipe
+                key={recipe.idMeal}
+                fetchedRecipe={recipe}
+                params={params}
+              />
+            );
             // return <li key={recipe.idMeal}>{recipe.idMeal}</li>;
           })}
         </ul>
@@ -52,7 +64,13 @@ export default function Recipes({ params, className }: Props) {
   );
 }
 
-function Recipe({ fetchedRecipe }: { fetchedRecipe: TRecipe }) {
+function Recipe({
+  fetchedRecipe,
+  params,
+}: {
+  fetchedRecipe: TRecipe;
+  params: string;
+}) {
   const { idMeal, strMeal, strMealThumb } = fetchedRecipe;
 
   const { data: recipe, isLoading } = useQuery({
@@ -62,7 +80,7 @@ function Recipe({ fetchedRecipe }: { fetchedRecipe: TRecipe }) {
   });
 
   return (
-    <li className="w-96 border-2 border-cyan-400">
+    <li className="w-96 rounded-md border-2 border-cyan-400">
       <Image
         src={strMealThumb}
         alt="External Image"
@@ -81,6 +99,20 @@ function Recipe({ fetchedRecipe }: { fetchedRecipe: TRecipe }) {
             <p>Category: {recipe.strCategory}</p>
             <p>Area: {recipe.strArea}</p>
             {/* <Ingredients meal={recipe} /> */}
+            {/* <Link href={`/${idMeal}/${params}`}>Open</Link> */}
+            <Dialog>
+              <DialogTrigger>Open</DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle className="text-black">
+                    {recipe?.strMeal}
+                  </DialogTitle>
+                  <DialogDescription>
+                    {recipe?.strInstructions}
+                  </DialogDescription>
+                </DialogHeader>
+              </DialogContent>
+            </Dialog>
           </div>
         )}
       </div>

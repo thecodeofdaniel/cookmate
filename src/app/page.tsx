@@ -28,12 +28,9 @@ export default function Home() {
           ingredients={ingredients.length > 0 ? ingredients.join(',') : null}
           category={category}
           area={area}
-          className="flex flex-col gap-2 border-2 border-indigo-500 md:flex-row md:items-center"
+          className="flex flex-col gap-2 md:flex-row md:items-center"
         />
-        <Recipes
-          params={params}
-          className="flex-1-px overflow-auto border-2 border-red-500"
-        />
+        <Recipes params={params} className="flex-1-px overflow-auto" />
       </div>
     </>
   );
