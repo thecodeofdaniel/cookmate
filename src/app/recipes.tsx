@@ -99,8 +99,8 @@ function Recipe({
             <p>Category: {recipe.strCategory}</p>
             <p>Area: {recipe.strArea}</p>
             {/* <Ingredients meal={recipe} /> */}
-            {/* <Link href={`/${idMeal}/${params}`}>Open</Link> */}
-            <Dialog>
+            <Link href={`/${idMeal}`}>Open</Link>
+            {/* <Dialog>
               <DialogTrigger>Open</DialogTrigger>
               <DialogContent>
                 <DialogHeader>
@@ -112,7 +112,7 @@ function Recipe({
                   </DialogDescription>
                 </DialogHeader>
               </DialogContent>
-            </Dialog>
+            </Dialog> */}
           </div>
         )}
       </div>

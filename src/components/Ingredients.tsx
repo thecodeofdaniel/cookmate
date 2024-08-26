@@ -1,4 +1,11 @@
-export function Ingredients({ meal }: { meal: TRecipe }) {
+import { cn } from '@/lib/utils';
+
+type Props = {
+  meal: TRecipe;
+  className?: string;
+};
+
+export function Ingredients({ meal, className }: Props) {
   const ingredients = [];
 
   // Loop through the 20 ingredients and add them to the list if not empty
@@ -16,12 +23,13 @@ export function Ingredients({ meal }: { meal: TRecipe }) {
 
   return (
     <>
-      <p className="font-medium">Ingredients</p>
-      <ul className="">
+      <ul className={cn(className)}>
         {ingredients.map(({ ingredient, measurement }, index) => (
           <li key={`${meal.idMeal}:${index}`}>
-            <p>
-              {measurement}: {ingredient}
+            <p className="flex items-center justify-between gap-2">
+              <span>{measurement}</span>
+              <span className="flex-1 border-b border-dotted border-stone-700"></span>{' '}
+              <span>{ingredient}</span>
             </p>
           </li>
         ))}

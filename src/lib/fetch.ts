@@ -96,6 +96,8 @@ export async function fetchSingleRecipe(id: string): Promise<TRecipe> {
 
   // console.log(url);
 
+  console.log(url);
+
   const response = await fetch(url, {
     cache: 'force-cache',
   });
