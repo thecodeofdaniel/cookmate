@@ -1,5 +1,6 @@
 import { cn } from '@/lib/utils';
 
+//------------------------------------------------------------------------------
 type Props = {
   meal: TRecipe;
   className?: string;

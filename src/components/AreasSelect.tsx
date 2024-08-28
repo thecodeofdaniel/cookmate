@@ -11,6 +11,7 @@ import {
 
 import { fetchAreas } from '@/lib/fetch';
 
+//------------------------------------------------------------------------------
 export default function AreasSelect() {
   // console.log('Render: AreasSelect');
 

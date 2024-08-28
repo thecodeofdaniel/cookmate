@@ -1,10 +1,12 @@
 'use client';
 
-import Search from './search';
-import Recipes from './recipes';
 import { useSearchParams } from 'next/navigation';
 
-export default function Home() {
+import Search from './SearchForm';
+import Recipes from './Recipes';
+
+//------------------------------------------------------------------------------
+export default function page() {
   const searchParams = useSearchParams();
 
   const ingredients = searchParams.getAll('i');

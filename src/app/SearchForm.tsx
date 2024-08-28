@@ -21,11 +21,11 @@ import { Select } from '@/components/ui/select';
 
 import CategoriesSelect from '../components/CategoriesSelect';
 import AreasSelect from '../components/AreasSelect';
-import { createFetchRecipesNextParams } from '@/lib/fetch';
+import { createFetchRecipesParams } from '@/lib/utils';
 
 import { cn } from '@/lib/utils';
 
-export const dfltFormValues = {
+export const defaultSearchFormVals = {
   ingredients: '',
   category: 'None',
   area: 'None',
@@ -37,17 +37,17 @@ const FormSchema = z
       .string()
       .trim()
       .optional()
-      .default(dfltFormValues.ingredients),
-    category: z.string().optional().default(dfltFormValues.category),
-    area: z.string().optional().default(dfltFormValues.area),
+      .default(defaultSearchFormVals.ingredients),
+    category: z.string().optional().default(defaultSearchFormVals.category),
+    area: z.string().optional().default(defaultSearchFormVals.area),
   })
   .refine(
     (data) => {
       // what it should be!
       const filledFields = [
-        data.ingredients !== dfltFormValues.ingredients,
-        data.category !== dfltFormValues.category,
-        data.area !== dfltFormValues.area,
+        data.ingredients !== defaultSearchFormVals.ingredients,
+        data.category !== defaultSearchFormVals.category,
+        data.area !== defaultSearchFormVals.area,
       ].filter(Boolean).length;
 
       return filledFields === 1;
@@ -56,8 +56,9 @@ const FormSchema = z
     { message: 'One and only one field must be filled', path: ['formError'] },
   );
 
-export type FormValues = z.infer<typeof FormSchema>;
+export type SearchFormValues = z.infer<typeof FormSchema>;
 
+//------------------------------------------------------------------------------
 type Props = {
   ingredients: string | null;
   category: string | null;
@@ -65,7 +66,7 @@ type Props = {
   className?: string;
 };
 
-export default function Search({
+export default function SearchForm({
   ingredients,
   category,
   area,
@@ -77,18 +78,18 @@ export default function Search({
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      ingredients: ingredients ?? dfltFormValues.ingredients,
-      category: category ?? dfltFormValues.category,
-      area: area ?? dfltFormValues.area,
+      ingredients: ingredients ?? defaultSearchFormVals.ingredients,
+      category: category ?? defaultSearchFormVals.category,
+      area: area ?? defaultSearchFormVals.area,
     },
   });
 
   // Change values inside form if using prev and next browser
   useEffect(() => {
     const updatedValues = {
-      ingredients: ingredients ?? dfltFormValues.ingredients,
-      category: category ?? dfltFormValues.category,
-      area: area ?? dfltFormValues.area,
+      ingredients: ingredients ?? defaultSearchFormVals.ingredients,
+      category: category ?? defaultSearchFormVals.category,
+      area: area ?? defaultSearchFormVals.area,
     };
 
     form.reset(updatedValues);
@@ -101,7 +102,7 @@ export default function Search({
 
   // this function only runs when there's no errors
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    const nextParams = createFetchRecipesNextParams(data);
+    const nextParams = createFetchRecipesParams(data);
 
     if (nextParams) {
       router.push(nextParams);
@@ -123,8 +124,9 @@ export default function Search({
                   placeholder="Enter some ingredients (e.g. salt, pepper, chicken)"
                   {...field}
                   disabled={
-                    form.getValues('category') !== dfltFormValues.category ||
-                    form.getValues('area') !== dfltFormValues.area
+                    form.getValues('category') !==
+                      defaultSearchFormVals.category ||
+                    form.getValues('area') !== defaultSearchFormVals.area
                   }
                 />
               </FormControl>
@@ -144,8 +146,8 @@ export default function Search({
                 value={field.value}
                 disabled={
                   form.getValues('ingredients') !==
-                    dfltFormValues.ingredients ||
-                  form.getValues('area') !== dfltFormValues.area
+                    defaultSearchFormVals.ingredients ||
+                  form.getValues('area') !== defaultSearchFormVals.area
                 }
               >
                 <CategoriesSelect />
@@ -166,8 +168,8 @@ export default function Search({
                 value={field.value}
                 disabled={
                   form.getValues('ingredients') !==
-                    dfltFormValues.ingredients ||
-                  form.getValues('category') !== dfltFormValues.category
+                    defaultSearchFormVals.ingredients ||
+                  form.getValues('category') !== defaultSearchFormVals.category
                 }
               >
                 <AreasSelect />

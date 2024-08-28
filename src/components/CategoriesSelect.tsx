@@ -11,6 +11,7 @@ import {
 
 import { fetchCategories } from '@/lib/fetch';
 
+//------------------------------------------------------------------------------
 export default function CategoriesSelect() {
   // console.log('Render: CategoriesSelect');
 
