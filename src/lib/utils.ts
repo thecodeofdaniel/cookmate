@@ -1,17 +1,17 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
+import { dfltFormValues, type FormValues } from '../app/SearchForm';
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-const scrollToSection = (id: string) => {
-  const element = document.getElementById(id);
-  element?.scrollIntoView({
-    behavior: 'smooth',
-    inline: 'nearest',
+export function delay(ms: number = 2000) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
   });
-};
+}
 
 export function extractIngredients(ingredients: string): string[] {
   const items = ingredients
@@ -21,4 +21,46 @@ export function extractIngredients(ingredients: string): string[] {
     .sort((a, b) => a.localeCompare(b)); // Sorting alphabetically
 
   return items;
+}
+
+export function createFetchRecipesURL(params: string): string {
+  let url = RECIPES_URL;
+  const prefix = params.substring(0, 3);
+
+  switch (prefix) {
+    case '?i=':
+      const withoutPrefix = params.replace('?i=', '');
+      const arr = withoutPrefix.split('&i=');
+      const apiParams = arr.join(',');
+      url += `${prefix}${apiParams}`;
+      break;
+    case '?c=':
+      url += params;
+      break;
+    case '?a=':
+      url += params;
+      break;
+    default:
+      url = '';
+      break;
+  }
+
+  return url;
+}
+
+export function createFetchRecipesParams(data: FormValues): string {
+  const { ingredients, category, area } = data;
+
+  let params = '';
+
+  if (ingredients !== dfltFormValues.ingredients) {
+    const ingredientsArr = extractIngredients(ingredients);
+    params = `?i=${ingredientsArr.join('&i=')}`;
+  } else if (category !== dfltFormValues.category) {
+    params = `?c=${category}`;
+  } else if (area !== dfltFormValues.area) {
+    params = `?a=${area}`;
+  }
+
+  return params;
 }

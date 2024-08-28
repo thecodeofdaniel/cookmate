@@ -1,47 +1,6 @@
-import { extractIngredients } from './utils';
-import { dfltFormValues, FormValues } from '../app/search';
-
-const CATEGORIES_URL =
-  'https://www.themealdb.com/api/json/v1/1/list.php?c=list';
-const AREAS_URL = 'https://www.themealdb.com/api/json/v1/1/list.php?a=list';
-
-const RECIPES_URL = `https://www.themealdb.com/api/json/v2/${process.env.NEXT_PUBLIC_API_KEY}/filter.php`;
-const RECIPE_URL = `https://www.themealdb.com/api/json/v1/1/lookup.php`;
-
-type CategoriesApiResponse = {
-  meals: {
-    strCategory: string;
-  }[];
-};
-
-type AreasApiResponse = {
-  meals: {
-    strArea: string;
-  }[];
-};
-
-function delay(ms: number = 2000) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-}
-
-export type TFetchedRecipe = {
-  strMeal: string;
-  strMealThumb: string;
-  idMeal: string;
-};
-
-type TFetchedRecipesApiResponse = {
-  meals: TFetchedRecipe[];
-};
-
 export async function fetchCategories(): Promise<string[]> {
-  // await delay();
-
   const response = await fetch(CATEGORIES_URL, {
     cache: 'force-cache',
-    // next: { revalidate: 3600 },
   });
 
   if (!response.ok) {
@@ -74,8 +33,6 @@ export async function fetchAreas(): Promise<string[]> {
 }
 
 export async function fetchRecipes(url: string): Promise<TFetchedRecipe[]> {
-  await delay();
-
   const response = await fetch(url, {
     cache: 'force-cache',
   });
@@ -91,12 +48,8 @@ export async function fetchRecipes(url: string): Promise<TFetchedRecipe[]> {
   return formattedData;
 }
 
-export async function fetchSingleRecipe(id: string): Promise<TRecipe> {
-  const url = RECIPE_URL + '?i=' + id;
-
-  // console.log(url);
-
-  console.log(url);
+export async function fetchSingleRecipe(id: string): Promise<TRecipe | null> {
+  const url = SINGLE_RECIPE_URL + '?i=' + id;
 
   const response = await fetch(url, {
     cache: 'force-cache',
@@ -108,49 +61,10 @@ export async function fetchSingleRecipe(id: string): Promise<TRecipe> {
   }
 
   const data: TRecipeApiResponse = await response.json();
-  let formattedData = data['meals'][0];
 
-  return formattedData;
-}
-
-export function createURLfromParams(params: string): string {
-  let url = RECIPES_URL;
-  const prefix = params.substring(0, 3);
-
-  switch (prefix) {
-    case '?i=':
-      const withoutPrefix = params.replace('?i=', '');
-      const arr = withoutPrefix.split('&i=');
-      const apiParams = arr.join(',');
-      url += `${prefix}${apiParams}`;
-      break;
-    case '?c=':
-      url += params;
-      break;
-    case '?a=':
-      url += params;
-      break;
-    default:
-      url = '';
-      break;
+  if (data['meals']) {
+    return data['meals'][0];
+  } else {
+    return null;
   }
-
-  return url;
-}
-
-export function createFetchRecipesNextParams(data: FormValues): string {
-  const { ingredients, category, area } = data;
-
-  let params = '';
-
-  if (ingredients !== dfltFormValues.ingredients) {
-    const ingredientsArr = extractIngredients(ingredients);
-    params = `?i=${ingredientsArr.join('&i=')}`;
-  } else if (category !== dfltFormValues.category) {
-    params = `?c=${category}`;
-  } else if (area !== dfltFormValues.area) {
-    params = `?a=${area}`;
-  }
-
-  return params;
 }

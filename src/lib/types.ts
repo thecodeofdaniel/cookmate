@@ -1,3 +1,25 @@
+type CategoriesApiResponse = {
+  meals: {
+    strCategory: string;
+  }[];
+};
+
+type AreasApiResponse = {
+  meals: {
+    strArea: string;
+  }[];
+};
+
+type TFetchedRecipe = {
+  strMeal: string;
+  strMealThumb: string;
+  idMeal: string;
+};
+
+type TFetchedRecipesApiResponse = {
+  meals: TFetchedRecipe[];
+};
+
 type TRecipe = {
   idMeal: string;
   strMeal: string;
