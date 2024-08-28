@@ -12,7 +12,8 @@ import Ingredients from '@/components/Ingredients';
 // Libraries
 import { fetchSingleRecipe } from '@/lib/fetch';
 
-// import mealsData from '../../../public/meal.json';
+import mealsData from '../../../public/meal.json';
+import { Button } from '@/components/ui/button';
 
 //------------------------------------------------------------------------------
 type Props = {
@@ -23,13 +24,14 @@ type Props = {
 
 export default async function Page({ params }: Props) {
   const recipe = await fetchSingleRecipe(params.idMeal);
+  // const recipe = mealsData;
 
   if (!recipe) {
     notFound();
   }
 
   return (
-    <section className="flex flex-1-px flex-col gap-4 overflow-auto border-2 border-red-500 p-4 md:flex-row">
+    <section className="m-4 flex flex-1-px flex-col gap-4 overflow-auto md:flex-row">
       <Image
         src={recipe.strMealThumb}
         alt="External Image"
@@ -38,7 +40,7 @@ export default async function Page({ params }: Props) {
         className="mx-auto rounded-md md:mx-0 md:mb-auto"
         priority
       />
-      <div className="flex w-full flex-col border-2 border-yellow-500">
+      <div className="flex w-full flex-col">
         <div className="flex flex-col gap-x-2 xl:flex-row">
           <h2 className="text-2xl font-bold lg:text-3xl">{recipe.strMeal}</h2>
           <ul className="flex items-center gap-2">
@@ -52,8 +54,20 @@ export default async function Page({ params }: Props) {
             </li>
           </ul>
         </div>
-
-        <div className="mt-2 flex flex-1 flex-col gap-4 border-2 border-green-500 xl:flex-row">
+        {recipe.strYoutube ? (
+          <Button asChild>
+            <a
+              href={recipe.strYoutube}
+              target="_blank"
+              className="my-2 mr-auto border"
+            >
+              Watch Video
+            </a>
+          </Button>
+        ) : (
+          <div className="my-2" />
+        )}
+        <div className="flex flex-1 flex-col gap-4 xl:flex-row">
           <Ingredients meal={recipe} className="flex-1" />
           <Textarea
             defaultValue={recipe.strInstructions}

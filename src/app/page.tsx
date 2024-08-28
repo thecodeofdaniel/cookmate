@@ -25,7 +25,7 @@ export default function page() {
 
   return (
     <>
-      <div className="m-2 flex flex-1 flex-col border-2 border-green-500">
+      <div className="m-4 flex flex-1 flex-col">
         <Search
           ingredients={ingredients.length > 0 ? ingredients.join(',') : null}
           category={category}
