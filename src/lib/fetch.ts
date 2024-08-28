@@ -1,3 +1,5 @@
+import { CATEGORIES_URL, AREAS_URL, SINGLE_RECIPE_URL } from './constants';
+
 export async function fetchCategories(): Promise<string[]> {
   const response = await fetch(CATEGORIES_URL, {
     cache: 'force-cache',

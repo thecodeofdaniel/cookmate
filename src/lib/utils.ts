@@ -1,7 +1,9 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-import { dfltFormValues, type FormValues } from '../app/SearchForm';
+import { defaultSearchFormVals, type SearchFormValues } from '../app/SearchForm';
+
+import { RECIPES_URL } from './constants';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -48,17 +50,17 @@ export function createFetchRecipesURL(params: string): string {
   return url;
 }
 
-export function createFetchRecipesParams(data: FormValues): string {
+export function createFetchRecipesParams(data: SearchFormValues): string {
   const { ingredients, category, area } = data;
 
   let params = '';
 
-  if (ingredients !== dfltFormValues.ingredients) {
+  if (ingredients !== defaultSearchFormVals.ingredients) {
     const ingredientsArr = extractIngredients(ingredients);
     params = `?i=${ingredientsArr.join('&i=')}`;
-  } else if (category !== dfltFormValues.category) {
+  } else if (category !== defaultSearchFormVals.category) {
     params = `?c=${category}`;
-  } else if (area !== dfltFormValues.area) {
+  } else if (area !== defaultSearchFormVals.area) {
     params = `?a=${area}`;
   }
 
