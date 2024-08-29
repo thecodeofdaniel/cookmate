@@ -33,6 +33,10 @@ export default function HomePage() {
           className="flex flex-col gap-2 md:flex-row md:items-center"
         />
         <Recipes params={params} className="flex-1-px overflow-auto" />
+        {/* <div className="mx-4 mt-auto flex justify-between border">
+          <p>Prev</p>
+          <p>Next</p>
+        </div> */}
       </div>
     </>
   );
