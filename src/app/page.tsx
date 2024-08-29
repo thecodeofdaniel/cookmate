@@ -6,7 +6,7 @@ import Search from './SearchForm';
 import Recipes from './Recipes';
 
 //------------------------------------------------------------------------------
-export default function page() {
+export default function HomePage() {
   const searchParams = useSearchParams();
 
   const ingredients = searchParams.getAll('i');

@@ -22,7 +22,7 @@ type Props = {
   };
 };
 
-export default async function Page({ params }: Props) {
+export default async function RecipeDetailsPage({ params }: Props) {
   const recipe = await fetchSingleRecipe(params.idMeal);
   // const recipe = mealsData;
 
