@@ -25,7 +25,7 @@ export function extractIngredients(ingredients: string): string[] {
   return items;
 }
 
-export function createFetchRecipesURL(params: string): string {
+export function createFetchRecipesApiURL(params: string): string {
   let url = RECIPES_URL;
   const prefix = params.substring(0, 3);
 

@@ -63,6 +63,7 @@ type Props = {
   ingredients: string | null;
   category: string | null;
   area: string | null;
+  page: string;
   className?: string;
 };
 
@@ -70,8 +71,11 @@ export default function SearchForm({
   ingredients,
   category,
   area,
+  page,
   className,
 }: Props) {
+  // console.log('Render: SearchForm');
+
   const router = useRouter();
 
   // On first reload intialize default values
@@ -102,7 +106,10 @@ export default function SearchForm({
 
   // this function only runs when there's no errors
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    const nextParams = createFetchRecipesParams(data);
+    let nextParams = createFetchRecipesParams(data);
+    // nextParams += '&page=' + page; // might change to 1 when new params are selected
+    nextParams += '&page=' + '1';
+    // console.log(nextParams);
 
     if (nextParams) {
       router.push(nextParams);

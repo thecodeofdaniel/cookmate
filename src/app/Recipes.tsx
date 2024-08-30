@@ -1,6 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+// Next
+import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 // Tanstack
 import { useQuery } from '@tanstack/react-query';
@@ -10,78 +12,81 @@ import Recipe from './Recipe';
 
 // Libraries
 import { fetchRecipes } from '@/lib/fetch';
-import { createFetchRecipesURL } from '@/lib/utils';
+import { createFetchRecipesApiURL } from '@/lib/utils';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
+// Local data
 import recipesJSON from '../../public/recipes.json';
 
 //------------------------------------------------------------------------------
 type Props = {
   params: string;
+  page: number;
   className?: string;
 };
 
-export default function Recipes({ params, className }: Props) {
-  const [currentPage, setCurrentPage] = useState(1);
+const AMOUNT = 8;
 
-  const url = createFetchRecipesURL(params);
+export default function Recipes({ params, page, className }: Props) {
+  // console.log('Render: Recipes');
 
-  const AMOUNT = 5;
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  // const { data: recipes, isLoading } = useQuery({
-  //   queryKey: ['recipes', url],
-  //   queryFn: () => fetchRecipes(url),
-  //   staleTime: Infinity,
-  //   enabled: url !== '',
-  // });
+  const url = createFetchRecipesApiURL(params);
 
-  const isLoading = false;
-  const recipes = recipesJSON['meals'];
-  const MAX_PAGES = Math.ceil(recipes.length / AMOUNT);
-
-  let startIdx;
-  let endIdx;
-
-  if (currentPage < MAX_PAGES + 1 && currentPage > 0) {
-    startIdx = (currentPage - 1) * AMOUNT;
-    endIdx = currentPage * AMOUNT - 1;
-  }
+  const { data: recipes = [], isLoading = false } = useQuery({
+    queryKey: ['recipes', url],
+    queryFn: () => fetchRecipes(url),
+    staleTime: Infinity,
+    enabled: url !== '',
+  });
 
   if (url === '') {
     return <p>Search for some recipes!</p>;
   }
 
+  // Loading local JSON data for testing
+  // const isLoading = false;
+  // const recipes = recipesJSON['meals'];
+
+  let MAX_PAGES = Math.ceil(recipes.length / AMOUNT);
+  let startIdx;
+  let endIdx;
   let paginatedRecipes;
 
   if (recipes) {
+    if (page < MAX_PAGES + 1 && page > 0) {
+      startIdx = (page - 1) * AMOUNT;
+      endIdx = page * AMOUNT - 1;
+    }
+
     if (endIdx !== undefined) {
       paginatedRecipes = recipes?.slice(startIdx, endIdx + 1);
     }
   }
 
-  const handlePrev = () => {
-    setCurrentPage((prev) => {
-      if (prev - 1 <= 0) {
-        return prev;
+  const handleNavigation = (direction: 'next' | 'prev') => {
+    let currPage = +searchParams.get('page')!;
+
+    if (direction === 'prev') {
+      if (currPage - 1 <= 0) {
+        return;
       }
 
-      return prev - 1;
-    });
-  };
+      router.push(params + `&page=${currPage - 1}`);
+    }
 
-  const handleNext = () => {
-    setCurrentPage((prev) => {
-      if (prev + 1 > MAX_PAGES) {
-        return prev;
+    if (direction === 'next') {
+      if (currPage + 1 > MAX_PAGES) {
+        return;
       }
-      return prev + 1;
-    });
-  };
 
-  console.log(MAX_PAGES);
-  console.log(`${startIdx} - ${endIdx}`);
+      router.push(params + `&page=${currPage + 1}`);
+    }
+  };
 
   return (
     <>
@@ -105,11 +110,14 @@ export default function Recipes({ params, className }: Props) {
           })}
         </ul>
       )}
-      <div className="mx-4 mt-auto flex justify-between border">
-        <Button onClick={handlePrev} disabled={currentPage === 1}>
+      <div className="mx-4 mt-auto flex justify-between">
+        <Button onClick={() => handleNavigation('prev')} disabled={page === 1}>
           Prev
         </Button>
-        <Button onClick={handleNext} disabled={currentPage === MAX_PAGES}>
+        <Button
+          onClick={() => handleNavigation('next')}
+          disabled={page === MAX_PAGES}
+        >
           Next
         </Button>
       </div>

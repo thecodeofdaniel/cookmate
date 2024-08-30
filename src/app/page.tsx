@@ -7,11 +7,14 @@ import Recipes from './Recipes';
 
 //------------------------------------------------------------------------------
 export default function HomePage() {
+  console.log('Render: Homepage');
+
   const searchParams = useSearchParams();
 
   const ingredients = searchParams.getAll('i');
   const category = searchParams.get('c');
   const area = searchParams.get('a');
+  let page = searchParams.get('page') ?? '1';
 
   let params = '';
 
@@ -26,17 +29,19 @@ export default function HomePage() {
   return (
     <>
       <div className="m-4 flex flex-1 flex-col">
+        {/* Search adds the params onto url */}
         <Search
           ingredients={ingredients.length > 0 ? ingredients.join(',') : null}
           category={category}
           area={area}
+          page={page}
           className="flex flex-col gap-2 md:flex-row md:items-center"
         />
-        <Recipes params={params} className="flex-1-px overflow-auto" />
-        {/* <div className="mx-4 mt-auto flex justify-between border">
-          <p>Prev</p>
-          <p>Next</p>
-        </div> */}
+        <Recipes
+          params={params}
+          page={+page}
+          className="flex-1-px overflow-auto"
+        />
       </div>
     </>
   );
