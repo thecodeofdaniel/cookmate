@@ -48,16 +48,22 @@ export default function Recipes({ params, page, className }: Props) {
     return <p>Search for some recipes!</p>;
   }
 
+  // if (recipes.length === 0) {
+  //   return <p>No recipes found :(</p>;
+  // }
+
   // Loading local JSON data for testing
   // const isLoading = false;
   // const recipes = recipesJSON['meals'];
 
-  let MAX_PAGES = Math.ceil(recipes.length / AMOUNT);
+  let MAX_PAGES: number | null = null;
   let startIdx;
   let endIdx;
   let paginatedRecipes;
 
   if (recipes) {
+    MAX_PAGES = Math.ceil(recipes.length / AMOUNT);
+
     if (page < MAX_PAGES + 1 && page > 0) {
       startIdx = (page - 1) * AMOUNT;
       endIdx = page * AMOUNT - 1;
@@ -68,24 +74,27 @@ export default function Recipes({ params, page, className }: Props) {
     }
   }
 
-  const handleNavigation = (direction: 'next' | 'prev') => {
+  const handleNavigation = (direction: 'prev' | 'next') => {
     let currPage = +searchParams.get('page')!;
+    let newPage;
 
     if (direction === 'prev') {
-      if (currPage - 1 <= 0) {
+      newPage = currPage - 1;
+
+      if (newPage <= 0) {
         return;
       }
-
-      router.push(params + `&page=${currPage - 1}`);
     }
 
     if (direction === 'next') {
-      if (currPage + 1 > MAX_PAGES) {
+      newPage = currPage + 1;
+
+      if (newPage > MAX_PAGES!) {
         return;
       }
-
-      router.push(params + `&page=${currPage + 1}`);
     }
+
+    router.push(params + `&page=${newPage}`);
   };
 
   return (
@@ -110,17 +119,22 @@ export default function Recipes({ params, page, className }: Props) {
           })}
         </ul>
       )}
-      <div className="mx-4 mt-auto flex justify-between">
-        <Button onClick={() => handleNavigation('prev')} disabled={page === 1}>
-          Prev
-        </Button>
-        <Button
-          onClick={() => handleNavigation('next')}
-          disabled={page === MAX_PAGES}
-        >
-          Next
-        </Button>
-      </div>
+      {!isLoading && MAX_PAGES !== null && recipes.length > AMOUNT && (
+        <div className="mx-4 mt-auto flex justify-between">
+          <Button
+            onClick={() => handleNavigation('prev')}
+            disabled={page === 1}
+          >
+            Prev
+          </Button>
+          <Button
+            onClick={() => handleNavigation('next')}
+            disabled={page === MAX_PAGES}
+          >
+            Next
+          </Button>
+        </div>
+      )}
     </>
   );
 }
