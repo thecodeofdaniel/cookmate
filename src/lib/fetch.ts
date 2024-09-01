@@ -50,6 +50,30 @@ export async function fetchRecipes(url: string): Promise<TFetchedRecipe[]> {
   return formattedData;
 }
 
+/** This is a proxy to the actual fetchRecipes function. To prevent exposure of
+ * API key. It goes thru the API and uses the actual fetchRecipes function.
+ */
+export async function API_fetchRecipes(
+  searchParams: string,
+): Promise<TFetchedRecipe[]> {
+  const response = await fetch('api/recipes', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ searchParams: searchParams }),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch recipes');
+  }
+
+  const data = await response.json();
+  const recipes = data['recipes'];
+
+  return recipes;
+}
+
 export async function fetchSingleRecipe(id: string): Promise<TRecipe | null> {
   const url = SINGLE_RECIPE_URL + '?i=' + id;
 

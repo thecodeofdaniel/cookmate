@@ -7,23 +7,23 @@ import Recipes from './Recipes';
 
 //------------------------------------------------------------------------------
 export default function HomePage() {
-  console.log('Render: Homepage');
+  // console.log('Render: Homepage');
 
-  const searchParams = useSearchParams();
+  const nextSearchParams = useSearchParams();
 
-  const ingredients = searchParams.getAll('i');
-  const category = searchParams.get('c');
-  const area = searchParams.get('a');
-  let page = searchParams.get('page') ?? '1';
+  const ingredients = nextSearchParams.getAll('i');
+  const category = nextSearchParams.get('c');
+  const area = nextSearchParams.get('a');
+  let page = nextSearchParams.get('page') ?? '1';
 
-  let params = '';
+  let searchParams = '';
 
   if (ingredients.length > 0) {
-    params += '?i=' + ingredients.join('&i=');
+    searchParams += '?i=' + ingredients.join('&i=');
   } else if (category) {
-    params += '?c=' + category;
+    searchParams += '?c=' + category;
   } else if (area) {
-    params += '?a=' + area;
+    searchParams += '?a=' + area;
   }
 
   return (
@@ -34,11 +34,10 @@ export default function HomePage() {
           ingredients={ingredients.length > 0 ? ingredients.join(',') : null}
           category={category}
           area={area}
-          page={page}
           className="flex flex-col gap-2 md:flex-row md:items-center"
         />
         <Recipes
-          params={params}
+          searchParams={searchParams}
           page={+page}
           className="flex-1-px overflow-auto"
         />

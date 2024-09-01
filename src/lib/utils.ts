@@ -1,9 +1,10 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-import { defaultSearchFormVals, type SearchFormValues } from '../app/SearchForm';
-
-import { RECIPES_URL } from './constants';
+import {
+  defaultSearchFormVals,
+  type SearchFormValues,
+} from '../app/SearchForm';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -15,6 +16,11 @@ export function delay(ms: number = 2000) {
   });
 }
 
+/** This extracts the ingredients entered from user and turns them into an array
+ * of ingredients. It also removes any white space for an ingredient with an
+ * underscore (e.g. chicken breast -> chicken_breast). As well as put them into
+ * alphabetical order
+ */
 export function extractIngredients(ingredients: string): string[] {
   const items = ingredients
     .split(',')
@@ -25,31 +31,9 @@ export function extractIngredients(ingredients: string): string[] {
   return items;
 }
 
-export function createFetchRecipesApiURL(params: string): string {
-  let url = RECIPES_URL;
-  const prefix = params.substring(0, 3);
-
-  switch (prefix) {
-    case '?i=':
-      const withoutPrefix = params.replace('?i=', '');
-      const arr = withoutPrefix.split('&i=');
-      const apiParams = arr.join(',');
-      url += `${prefix}${apiParams}`;
-      break;
-    case '?c=':
-      url += params;
-      break;
-    case '?a=':
-      url += params;
-      break;
-    default:
-      url = '';
-      break;
-  }
-
-  return url;
-}
-
+/** This extracts the data from the form in order to insert them as search
+ * params into the URL.
+ */
 export function createFetchRecipesParams(data: SearchFormValues): string {
   const { ingredients, category, area } = data;
 

@@ -9,42 +9,38 @@ import { useQuery } from '@tanstack/react-query';
 
 // Components
 import Recipe from './Recipe';
+import { Button } from '@/components/ui/button';
 
 // Libraries
-import { fetchRecipes } from '@/lib/fetch';
-import { createFetchRecipesApiURL } from '@/lib/utils';
-
+import { API_fetchRecipes } from '@/lib/fetch';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
 
 // Local data
 import recipesJSON from '../../public/recipes.json';
 
 //------------------------------------------------------------------------------
 type Props = {
-  params: string;
+  searchParams: string;
   page: number;
   className?: string;
 };
 
 const AMOUNT = 8;
 
-export default function Recipes({ params, page, className }: Props) {
+export default function Recipes({ searchParams, page, className }: Props) {
   // console.log('Render: Recipes');
 
   const router = useRouter();
-  const searchParams = useSearchParams();
-
-  const url = createFetchRecipesApiURL(params);
+  const nextSearchParams = useSearchParams();
 
   const { data: recipes = [], isLoading = false } = useQuery({
-    queryKey: ['recipes', url],
-    queryFn: () => fetchRecipes(url),
+    queryKey: ['recipes', searchParams],
+    queryFn: () => API_fetchRecipes(searchParams),
     staleTime: Infinity,
-    enabled: url !== '',
+    enabled: searchParams !== '',
   });
 
-  if (url === '') {
+  if (searchParams === '') {
     return <p>Search for some recipes!</p>;
   }
 
@@ -75,7 +71,7 @@ export default function Recipes({ params, page, className }: Props) {
   }
 
   const handleNavigation = (direction: 'prev' | 'next') => {
-    let currPage = +searchParams.get('page')!;
+    let currPage = +nextSearchParams.get('page')!;
     let newPage;
 
     if (direction === 'prev') {
@@ -94,7 +90,7 @@ export default function Recipes({ params, page, className }: Props) {
       }
     }
 
-    router.push(params + `&page=${newPage}`);
+    router.push(searchParams + `&page=${newPage}`);
   };
 
   return (
@@ -113,7 +109,7 @@ export default function Recipes({ params, page, className }: Props) {
               <Recipe
                 key={recipe.idMeal}
                 fetchedRecipe={recipe}
-                params={params}
+                params={searchParams}
               />
             );
           })}
