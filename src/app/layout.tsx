@@ -32,7 +32,8 @@ export default function RootLayout({
           <section className="container flex h-full flex-col">
             <TanStackProvider>
               <GlassCard className="my-4 flex flex-1 flex-col justify-between rounded-md">
-                <Suspense fallback={<p>Loading...</p>}>{children}</Suspense>
+                {/* <Suspense fallback={<p>Loading...</p>}>{children}</Suspense> */}
+                {children}
               </GlassCard>
             </TanStackProvider>
           </section>

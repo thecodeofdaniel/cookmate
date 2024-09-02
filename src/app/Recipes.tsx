@@ -22,6 +22,7 @@ import {
 
 // Local data
 import recipesJSON from '../../public/recipes.json';
+import { Suspense } from 'react';
 
 //------------------------------------------------------------------------------
 type Props = {
@@ -43,36 +44,33 @@ export default async function Recipes({
     return <p>Search for some recipes!</p>;
   }
 
-  console.log('recipeParams:', recipeParams);
-
   const url = createFetchRecipesApiURL(recipeParams);
   const recipes = await fetchRecipes(url);
 
-  console.log('Recipes', recipes);
+  if (recipes === null) {
+    return <p>No recipes found :(</p>;
+  }
 
-  return <h1>Hello World</h1>;
-
-  // return (
-  //   <>
-  //     <ul
-  //       className={cn(
-  //         className,
-  //         'flex flex-wrap items-start justify-center gap-2',
-  //       )}
-  //     >
-  //       {recipes?.map((recipe) => {
-  //         return (
-  //           // <Recipe
-  //           //   key={recipe.idMeal}
-  //           //   fetchedRecipe={recipe}
-  //           //   params={searchParams}
-  //           // />
-  //           <li>{recipe.idMeal}</li>
-  //         );
-  //       })}
-  //     </ul>
-  //   </>
-  // );
+  return (
+    <>
+      <ul
+        className={cn(
+          className,
+          'flex flex-wrap items-start justify-center gap-2',
+        )}
+      >
+        {/* <Suspense fallback={<p>Loading your recipessss...</p>}> */}
+          {recipes?.map((recipe) => {
+            return (
+              // <Suspense key={recipe.idMeal} fallback={<p>Loading A recipe</p>}>
+                <Recipe key={recipe.idMeal} fetchedRecipe={recipe} />
+              // </Suspense>
+            );
+          })}
+        {/* </Suspense> */}
+      </ul>
+    </>
+  );
 
   // // console.log('recipeParams:', recipeParams);
   // const recipes = await API_fetchRecipes(recipeParams);

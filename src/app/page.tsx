@@ -5,6 +5,8 @@ import { useSearchParams } from 'next/navigation';
 import Search from './SearchForm';
 import Recipes from './Recipes';
 
+import { Suspense } from 'react';
+
 //------------------------------------------------------------------------------
 type Props = {
   searchParams: {
@@ -44,13 +46,16 @@ export default function HomePage({ searchParams }: Props) {
         }
         category={category}
         area={area}
+        recipeParams={recipeParams}
         className="flex flex-col gap-2 md:flex-row md:items-center"
       />
-      <Recipes
-        recipeParams={recipeParams}
-        page={1}
-        className="flex-1-px overflow-auto"
-      />
+      <Suspense key={recipeParams} fallback={<p>Loading recipes...</p>}>
+        <Recipes
+          recipeParams={recipeParams}
+          page={1}
+          className="flex-1-px overflow-auto"
+        />
+      </Suspense>
     </div>
   );
 }

@@ -1,11 +1,11 @@
-'use client';
+// 'use client';
 
 // Next
 import Image from 'next/image';
 import Link from 'next/link';
 
-// Tanstack
-import { useQuery } from '@tanstack/react-query';
+// // Tanstack
+// import { useQuery } from '@tanstack/react-query';
 
 // Shadcn
 import { Button } from '@/components/ui/button';
@@ -15,19 +15,21 @@ import { Badge } from '@/components/ui/badge';
 import { fetchSingleRecipe } from '@/lib/fetch';
 
 // -----------------------------------------------------------------------------
-export default function Recipe({
-  fetchedRecipe,
-}: {
+type Props = {
   fetchedRecipe: TFetchedRecipe;
-  params: string;
-}) {
+  // params: string;
+};
+
+export default async function Recipe({ fetchedRecipe }: Props) {
   const { idMeal, strMeal, strMealThumb } = fetchedRecipe;
 
-  const { data: recipe, isLoading } = useQuery({
-    queryKey: ['recipe', idMeal],
-    queryFn: () => fetchSingleRecipe(idMeal),
-    staleTime: Infinity,
-  });
+  // const { data: recipe, isLoading } = useQuery({
+  //   queryKey: ['recipe', idMeal],
+  //   queryFn: () => fetchSingleRecipe(idMeal),
+  //   staleTime: Infinity,
+  // });
+
+  const recipe = await fetchSingleRecipe(idMeal);
 
   return (
     <li className="flex h-[28rem] w-72 flex-col rounded-md border">
@@ -41,7 +43,6 @@ export default function Recipe({
       />
       <section className="mt-2 flex flex-1 flex-col text-center">
         <h2 className="text-center text-xl font-bold">{strMeal}</h2>
-        {isLoading && <p>Fetching more info...</p>}
         {recipe && (
           <>
             <div className="flex justify-center gap-2">
