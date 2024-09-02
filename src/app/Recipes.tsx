@@ -13,8 +13,12 @@ import Recipe from './Recipe';
 import { Button } from '@/components/ui/button';
 
 // Libraries
-import { API_fetchRecipes } from '@/lib/fetch';
-import { cn } from '@/lib/utils';
+import { API_fetchRecipes, fetchRecipes } from '@/lib/fetch';
+import {
+  cn,
+  createFetchRecipesApiURL,
+  createFetchRecipesParams,
+} from '@/lib/utils';
 
 // Local data
 import recipesJSON from '../../public/recipes.json';
@@ -28,26 +32,58 @@ type Props = {
 
 const AMOUNT = 8;
 
-export default function Recipes({ page, className, recipeParams }: Props) {
+export default async function Recipes({
+  page,
+  className,
+  recipeParams,
+}: Props) {
   // console.log('Render: Recipes');
-
-  // const router = useRouter();
-  // const nextSearchParams = useSearchParams();
-
-  // const { data: recipes = [], isLoading = false } = useQuery({
-  //   queryKey: ['recipes', searchParams],
-  //   queryFn: () => API_fetchRecipes(searchParams),
-  //   staleTime: Infinity,
-  //   enabled: searchParams !== '',
-  // });
-
-  console.log('from Recipes, recipeParams:', recipeParams);
 
   if (recipeParams === '') {
     return <p>Search for some recipes!</p>;
-  } else {
-    return <p>Recipes found!</p>;
   }
+
+  console.log('recipeParams:', recipeParams);
+
+  const url = createFetchRecipesApiURL(recipeParams);
+  const recipes = await fetchRecipes(url);
+
+  console.log('Recipes', recipes);
+
+  return <h1>Hello World</h1>;
+
+  // return (
+  //   <>
+  //     <ul
+  //       className={cn(
+  //         className,
+  //         'flex flex-wrap items-start justify-center gap-2',
+  //       )}
+  //     >
+  //       {recipes?.map((recipe) => {
+  //         return (
+  //           // <Recipe
+  //           //   key={recipe.idMeal}
+  //           //   fetchedRecipe={recipe}
+  //           //   params={searchParams}
+  //           // />
+  //           <li>{recipe.idMeal}</li>
+  //         );
+  //       })}
+  //     </ul>
+  //   </>
+  // );
+
+  // // console.log('recipeParams:', recipeParams);
+  // const recipes = await API_fetchRecipes(recipeParams);
+
+  // console.log(recipes);
+
+  // if (recipeParams === '') {
+  //   return <p>Search for some recipes!</p>;
+  // } else {
+  //   return <p>Recipes found!</p>;
+  // }
 
   // if (recipes.length === 0) {
   //   return <p>No recipes found :(</p>;

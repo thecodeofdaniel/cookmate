@@ -54,14 +54,14 @@ export async function fetchRecipes(url: string): Promise<TFetchedRecipe[]> {
  * API key. It goes thru the API and uses the actual fetchRecipes function.
  */
 export async function API_fetchRecipes(
-  searchParams: string,
+  recipeParams: string,
 ): Promise<TFetchedRecipe[]> {
   const response = await fetch('api/recipes', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ searchParams: searchParams }),
+    body: JSON.stringify({ searchParams: recipeParams }),
   });
 
   if (!response.ok) {

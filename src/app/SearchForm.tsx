@@ -24,6 +24,7 @@ import AreasSelect from '../components/AreasSelect';
 import { createFetchRecipesParams } from '@/lib/utils';
 
 import { cn } from '@/lib/utils';
+import { revalidatePath } from 'next/cache';
 
 export const defaultSearchFormVals = {
   ingredients: '',
@@ -110,6 +111,8 @@ export default function SearchForm({
     if (nextParams) {
       router.push(nextParams);
     }
+
+    // revalidatePath('/');
   }
 
   return (

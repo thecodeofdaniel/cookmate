@@ -28,7 +28,7 @@ export default function HomePage({ searchParams }: Props) {
     if (Array.isArray(ingredients)) {
       recipeParams += '?i=' + ingredients.join('&i=');
     } else {
-      recipeParams += '?=' + ingredients;
+      recipeParams += '?i=' + ingredients;
     }
   } else if (category) {
     recipeParams += '?c=' + category;

@@ -5,6 +5,7 @@ import {
   defaultSearchFormVals,
   type SearchFormValues,
 } from '../app/SearchForm';
+import { RECIPES_URL } from './constants';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -49,4 +50,37 @@ export function createFetchRecipesParams(data: SearchFormValues): string {
   }
 
   return params;
+}
+
+
+/**
+ * This will create the URL for the 3rd party API. It should only include one of
+ * these categories. Otherwise the URL will be blank
+ * - i = ingredients
+ * - c = category
+ * - a = area
+ */
+export function createFetchRecipesApiURL(params: string): string | '' {
+  let url = RECIPES_URL;
+  const prefix = params.substring(0, 3);
+
+  switch (prefix) {
+    case '?i=':
+      const withoutPrefix = params.replace('?i=', '');
+      const arr = withoutPrefix.split('&i=');
+      const apiParams = arr.join(',');
+      url += `${prefix}${apiParams}`;
+      break;
+    case '?c=':
+      url += params;
+      break;
+    case '?a=':
+      url += params;
+      break;
+    default:
+      url = '';
+      break;
+  }
+
+  return url;
 }
