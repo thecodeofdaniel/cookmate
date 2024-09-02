@@ -20,6 +20,7 @@ type Props = {
   params: {
     idMeal: string;
   };
+  searchParams: string;
 };
 
 export default async function RecipeDetailsPage({ params }: Props) {
