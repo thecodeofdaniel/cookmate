@@ -1,11 +1,6 @@
-// 'use client';
-
 // Next
 import Image from 'next/image';
 import Link from 'next/link';
-
-// // Tanstack
-// import { useQuery } from '@tanstack/react-query';
 
 // Shadcn
 import { Button } from '@/components/ui/button';
@@ -17,17 +12,10 @@ import { fetchSingleRecipe } from '@/lib/fetch';
 // -----------------------------------------------------------------------------
 type Props = {
   fetchedRecipe: TFetchedRecipe;
-  // params: string;
 };
 
 export default async function Recipe({ fetchedRecipe }: Props) {
   const { idMeal, strMeal, strMealThumb } = fetchedRecipe;
-
-  // const { data: recipe, isLoading } = useQuery({
-  //   queryKey: ['recipe', idMeal],
-  //   queryFn: () => fetchSingleRecipe(idMeal),
-  //   staleTime: Infinity,
-  // });
 
   const recipe = await fetchSingleRecipe(idMeal);
 

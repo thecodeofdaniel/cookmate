@@ -1,9 +1,10 @@
 // Nextjs
-import { notFound } from 'next/navigation';
 import Image from 'next/image';
+import { notFound } from 'next/navigation';
 
 // Shadcn/UI
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 
 // Components
@@ -13,7 +14,6 @@ import Ingredients from '@/components/Ingredients';
 import { fetchSingleRecipe } from '@/lib/fetch';
 
 import mealsData from '../../../public/meal.json';
-import { Button } from '@/components/ui/button';
 
 //------------------------------------------------------------------------------
 type Props = {

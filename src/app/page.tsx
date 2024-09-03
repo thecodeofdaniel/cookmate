@@ -18,14 +18,12 @@ type Props = {
 };
 
 export default function HomePage({ searchParams }: Props) {
-  // console.log('Render: Homepage');
+  console.log('Render: Homepage');
 
   let ingredients = searchParams.i ?? null;
   let category = searchParams.c ?? null;
   let area = searchParams.a ?? null;
   let page = searchParams.page ?? '1';
-
-  console.log('page', page);
 
   let recipeParams = '';
 
@@ -41,6 +39,8 @@ export default function HomePage({ searchParams }: Props) {
     recipeParams += '?a=' + area;
   }
 
+  // console.log(`${recipeParams}-${page}`);
+
   return (
     <div className="m-4 flex flex-1 flex-col">
       <Search
@@ -52,7 +52,10 @@ export default function HomePage({ searchParams }: Props) {
         recipeParams={recipeParams}
         className="flex flex-col gap-2 md:flex-row md:items-center"
       />
-      <Suspense key={recipeParams} fallback={<p>Loading recipes...</p>}>
+      <Suspense
+        key={`${recipeParams}`}
+        fallback={<p>Loading recipes...</p>}
+      >
         <Recipes
           recipeParams={recipeParams}
           page={+page}

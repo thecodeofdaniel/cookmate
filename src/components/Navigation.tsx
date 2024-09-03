@@ -35,10 +35,18 @@ export default function Navigation({ recipeParams, page, maxPages }: Props) {
 
   return (
     <div className="mx-4 flex justify-between">
-      <Button className="border" onClick={() => handleNavigation('prev')}>
+      <Button
+        className="border"
+        onClick={() => handleNavigation('prev')}
+        disabled={page === 1}
+      >
         Previous
       </Button>
-      <Button className="border" onClick={() => handleNavigation('next')}>
+      <Button
+        className="border"
+        onClick={() => handleNavigation('next')}
+        disabled={page === maxPages}
+      >
         Next
       </Button>
     </div>
