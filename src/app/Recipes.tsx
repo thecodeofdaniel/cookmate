@@ -24,19 +24,23 @@ import {
 import recipesJSON from '../../public/recipes.json';
 import { Suspense } from 'react';
 
+import Navigation from '@/components/Navigation';
+
 //------------------------------------------------------------------------------
 type Props = {
   page: number;
   className?: string;
   recipeParams: string;
+  searchParams?: string;
 };
 
-const AMOUNT = 8;
+const AMOUNT = 2;
 
 export default async function Recipes({
   page,
   className,
   recipeParams,
+  searchParams,
 }: Props) {
   // console.log('Render: Recipes');
 
@@ -45,10 +49,25 @@ export default async function Recipes({
   }
 
   const url = createFetchRecipesApiURL(recipeParams);
-  const recipes = await fetchRecipes(url);
+  // const recipes = await fetchRecipes(url);
+  const recipes = recipesJSON['meals'];
 
   if (recipes === null) {
     return <p>No recipes found :(</p>;
+  }
+
+  const maxPages = Math.ceil(recipes.length / AMOUNT);
+  let startIdx;
+  let endIdx;
+  let paginatedRecipes;
+
+  if (page < maxPages + 1 && page > 0) {
+    startIdx = (page - 1) * AMOUNT;
+    endIdx = page * AMOUNT - 1;
+  }
+
+  if (endIdx !== undefined) {
+    paginatedRecipes = recipes?.slice(startIdx, endIdx + 1);
   }
 
   return (
@@ -59,37 +78,14 @@ export default async function Recipes({
           'flex flex-wrap items-start justify-center gap-2',
         )}
       >
-        {/* <Suspense fallback={<p>Loading your recipessss...</p>}> */}
-          {recipes?.map((recipe) => {
-            return (
-              // <Suspense key={recipe.idMeal} fallback={<p>Loading A recipe</p>}>
-                <Recipe key={recipe.idMeal} fetchedRecipe={recipe} />
-              // </Suspense>
-            );
-          })}
-        {/* </Suspense> */}
+        {paginatedRecipes?.map((recipe) => {
+          // return <Recipe key={recipe.idMeal} fetchedRecipe={recipe} />;
+          return <li key={recipe.idMeal}>id: {recipe.idMeal}</li>;
+        })}
       </ul>
+      <Navigation recipeParams={recipeParams} page={page} maxPages={maxPages} />
     </>
   );
-
-  // // console.log('recipeParams:', recipeParams);
-  // const recipes = await API_fetchRecipes(recipeParams);
-
-  // console.log(recipes);
-
-  // if (recipeParams === '') {
-  //   return <p>Search for some recipes!</p>;
-  // } else {
-  //   return <p>Recipes found!</p>;
-  // }
-
-  // if (recipes.length === 0) {
-  //   return <p>No recipes found :(</p>;
-  // }
-
-  // Loading local JSON data for testing
-  // const isLoading = false;
-  // const recipes = recipesJSON['meals'];
 
   // let MAX_PAGES: number | null = null;
   // let startIdx;
@@ -151,14 +147,7 @@ export default async function Recipes({
   //               params={searchParams}
   //             />
   //           );
-  //         })}
-  //       </ul>
-  //     )}
-  //     {!isLoading && MAX_PAGES !== null && recipes.length > AMOUNT && (
-  //       <div className="mx-4 mt-auto flex justify-between">
-  //         <Button
-  //           onClick={() => handleNavigation('prev')}
-  //           disabled={page === 1}
+  //         })}i={page === 1}
   //         >
   //           Prev
   //         </Button>

@@ -23,6 +23,9 @@ export default function HomePage({ searchParams }: Props) {
   let ingredients = searchParams.i ?? null;
   let category = searchParams.c ?? null;
   let area = searchParams.a ?? null;
+  let page = searchParams.page ?? '1';
+
+  console.log('page', page);
 
   let recipeParams = '';
 
@@ -52,7 +55,7 @@ export default function HomePage({ searchParams }: Props) {
       <Suspense key={recipeParams} fallback={<p>Loading recipes...</p>}>
         <Recipes
           recipeParams={recipeParams}
-          page={1}
+          page={+page}
           className="flex-1-px overflow-auto"
         />
       </Suspense>
