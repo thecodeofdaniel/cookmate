@@ -5,11 +5,7 @@ import '@/app/globals.css';
 import Navbar from './Navbar';
 import GlassCard from '@/components/GlassCard';
 
-// import ZustandProvider from '../providers/zustand-provider';
 import TanStackProvider from '../providers/tanstack-provider';
-
-import { Toaster } from '@/components/ui/toaster';
-import { Suspense } from 'react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -32,13 +28,11 @@ export default function RootLayout({
           <section className="container flex h-full flex-col">
             <TanStackProvider>
               <GlassCard className="my-4 flex flex-1 flex-col justify-between rounded-md">
-                {/* <Suspense fallback={<p>Loading...</p>}>{children}</Suspense> */}
                 {children}
               </GlassCard>
             </TanStackProvider>
           </section>
         </main>
-        <Toaster />
       </body>
     </html>
   );

@@ -42,6 +42,21 @@ export default function Navigation({ recipeParams, page, maxPages }: Props) {
       >
         Previous
       </Button>
+      {/* <ul className="flex gap-2">
+        {[...Array(maxPages)].map((_, index) => {
+          const pageNumber = index + 1;
+          return (
+            <li key={index}>
+              <Button
+                className="pointer-events-none w-10"
+                disabled={pageNumber === page}
+              >
+                {pageNumber}
+              </Button>
+            </li>
+          );
+        })}
+      </ul> */}
       <Button
         className="border"
         onClick={() => handleNavigation('next')}

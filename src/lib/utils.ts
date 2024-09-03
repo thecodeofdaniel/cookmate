@@ -33,9 +33,9 @@ export function extractIngredients(ingredients: string): string[] {
 }
 
 /** This extracts the data from the form in order to insert them as search
- * params into the URL.
+ * params (recipe params) into the URL.
  */
-export function createFetchRecipesParams(data: SearchFormValues): string {
+export function createRecipeParams(data: SearchFormValues): string {
   const { ingredients, category, area } = data;
 
   let params = '';
@@ -52,7 +52,6 @@ export function createFetchRecipesParams(data: SearchFormValues): string {
   return params;
 }
 
-
 /**
  * This will create the URL for the 3rd party API. It should only include one of
  * these categories. Otherwise the URL will be blank
@@ -60,7 +59,7 @@ export function createFetchRecipesParams(data: SearchFormValues): string {
  * - c = category
  * - a = area
  */
-export function createFetchRecipesApiURL(params: string): string | '' {
+export function createTheMealDbUrl(params: string): string | '' {
   let url = RECIPES_URL;
   const prefix = params.substring(0, 3);
 

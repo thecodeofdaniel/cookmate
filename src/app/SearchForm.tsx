@@ -1,7 +1,10 @@
 'use client';
 
+// React/Next
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+
+// Form validation
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -19,12 +22,12 @@ import {
 import { Input } from '../components/ui/input';
 import { Select } from '@/components/ui/select';
 
+// Components
 import CategoriesSelect from '../components/CategoriesSelect';
 import AreasSelect from '../components/AreasSelect';
-import { createFetchRecipesParams } from '@/lib/utils';
 
-import { cn } from '@/lib/utils';
-import { revalidatePath } from 'next/cache';
+// Utils
+import { cn, createRecipeParams } from '@/lib/utils';
 
 export const defaultSearchFormVals = {
   ingredients: '',
@@ -107,16 +110,15 @@ export default function SearchForm({
 
   // this function only runs when there's no errors
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    let nextParams = createFetchRecipesParams(data);
+    let newRecipeParams = createRecipeParams(data);
 
-    if (nextParams === recipeParams) {
-      console.log('Same as before');
+    if (newRecipeParams === recipeParams) {
+      return;
     }
 
-    nextParams += '&page=' + '1';
-
-    if (nextParams) {
-      router.push(nextParams);
+    if (newRecipeParams) {
+      newRecipeParams += '&page=1';
+      router.push(newRecipeParams);
     }
   }
 

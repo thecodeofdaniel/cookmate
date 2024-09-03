@@ -9,6 +9,9 @@ import { Badge } from '@/components/ui/badge';
 // Libraries
 import { fetchSingleRecipe } from '@/lib/fetch';
 
+// Local data
+import meal from '../../public/meal.json';
+
 // -----------------------------------------------------------------------------
 type Props = {
   fetchedRecipe: TFetchedRecipe;
@@ -16,6 +19,8 @@ type Props = {
 
 export default async function Recipe({ fetchedRecipe }: Props) {
   const { idMeal, strMeal, strMealThumb } = fetchedRecipe;
+  // const { idMeal, strMeal, strMealThumb } = meal;
+  // const recipe = meal;
 
   const recipe = await fetchSingleRecipe(idMeal);
 

@@ -4,7 +4,7 @@ import Navigation from '@/components/Navigation';
 
 // Libraries
 import { fetchRecipes } from '@/lib/fetch';
-import { cn, createFetchRecipesApiURL } from '@/lib/utils';
+import { cn, createTheMealDbUrl } from '@/lib/utils';
 
 // Local data
 import recipesJSON from '../../public/recipes.json';
@@ -28,7 +28,7 @@ export default async function Recipes({
     return <p>Search for some recipes!</p>;
   }
 
-  const url = createFetchRecipesApiURL(recipeParams);
+  const url = createTheMealDbUrl(recipeParams);
   const recipes = await fetchRecipes(url);
   // const recipes = recipesJSON['meals'];
 
@@ -40,7 +40,7 @@ export default async function Recipes({
 
   // If on a page that outside the boundaries
   if (page <= 0 || page > maxPages) {
-    return <p>There's nothing here. 0_0</p>;
+    return <p>There is nothing here 0_0</p>;
   }
 
   // Get the recipes for that selected page
