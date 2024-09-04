@@ -1,7 +1,3 @@
-'use client';
-
-import { useQuery } from '@tanstack/react-query';
-
 import {
   SelectContent,
   SelectItem,
@@ -9,33 +5,54 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-import { fetchAreas } from '@/lib/fetch';
+const AREAS = [
+  'None',
+  'American',
+  'British',
+  'Canadian',
+  'Chinese',
+  'Croatian',
+  'Dutch',
+  'Egyptian',
+  'Filipino',
+  'French',
+  'Greek',
+  'Indian',
+  'Irish',
+  'Italian',
+  'Jamaican',
+  'Japanese',
+  'Kenyan',
+  'Malaysian',
+  'Mexican',
+  'Moroccan',
+  'Polish',
+  'Portuguese',
+  'Russian',
+  'Spanish',
+  'Thai',
+  'Tunisian',
+  'Turkish',
+  'Ukrainian',
+  'Unknown',
+  'Vietnamese',
+] as const;
 
 //------------------------------------------------------------------------------
 export default function AreasSelect() {
-  // console.log('Render: AreasSelect');
-
-  const { data: areas, isLoading } = useQuery({
-    queryKey: ['area'],
-    queryFn: () => fetchAreas(),
-    staleTime: Infinity,
-  });
-
   return (
     <>
       <SelectTrigger>
         <SelectValue placeholder="Select Area (None)" />
       </SelectTrigger>
       <SelectContent>
-        {isLoading && <p>Please wait...</p>}
-        {!isLoading &&
-          areas?.map((area) => {
-            return (
-              <SelectItem key={area} value={area}>
-                {area}
-              </SelectItem>
-            );
-          })}
+        {AREAS.map((area) => {
+          return (
+            <SelectItem key={area} value={area}>
+              {area}
+            </SelectItem>
+          );
+        })}
       </SelectContent>
     </>
   );

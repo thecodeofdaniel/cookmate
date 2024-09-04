@@ -52,10 +52,7 @@ export default function HomePage({ searchParams }: Props) {
         recipeParams={recipeParams}
         className="flex flex-col gap-2 md:flex-row md:items-center"
       />
-      <Suspense
-        key={`${recipeParams}`}
-        fallback={<p>Loading recipes...</p>}
-      >
+      <Suspense key={`${recipeParams}`} fallback={<p>Loading recipes...</p>}>
         <Recipes
           recipeParams={recipeParams}
           page={+page}
