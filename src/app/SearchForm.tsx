@@ -21,7 +21,7 @@ import { Select } from '@/components/ui/select';
 
 import CategoriesSelect from '../components/CategoriesSelect';
 import AreasSelect from '../components/AreasSelect';
-import { createFetchRecipesParams } from '@/lib/utils';
+import { createRecipeParams } from '@/lib/utils';
 
 import { cn } from '@/lib/utils';
 
@@ -63,6 +63,7 @@ type Props = {
   ingredients: string | null;
   category: string | null;
   area: string | null;
+  recipeParams: string;
   className?: string;
 };
 
@@ -70,6 +71,7 @@ export default function SearchForm({
   ingredients,
   category,
   area,
+  recipeParams,
   className,
 }: Props) {
   // console.log('Render: SearchForm');
@@ -104,11 +106,15 @@ export default function SearchForm({
 
   // this function only runs when there's no errors
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    let nextParams = createFetchRecipesParams(data);
-    nextParams += '&page=' + '1';
+    let newRecipeParams = createRecipeParams(data);
 
-    if (nextParams) {
-      router.push(nextParams);
+    if (newRecipeParams === recipeParams) {
+      return;
+    }
+
+    if (newRecipeParams) {
+      newRecipeParams += '&page=1';
+      router.push(newRecipeParams);
     }
   }
 

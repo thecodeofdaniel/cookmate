@@ -1,7 +1,3 @@
-'use client';
-
-import { useQuery } from '@tanstack/react-query';
-
 import {
   SelectContent,
   SelectItem,
@@ -9,33 +5,39 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-import { fetchCategories } from '@/lib/fetch';
+const categories = [
+  'None',
+  'Beef',
+  'Breakfast',
+  'Chicken',
+  'Dessert',
+  'Goat',
+  'Lamb',
+  'Miscellaneous',
+  'Pasta',
+  'Pork',
+  'Seafood',
+  'Side',
+  'Starter',
+  'Vegan',
+  'Vegetarian',
+] as const;
 
 //------------------------------------------------------------------------------
 export default function CategoriesSelect() {
-  // console.log('Render: CategoriesSelect');
-
-  const { data: categories, isLoading } = useQuery({
-    queryKey: ['category'],
-    queryFn: () => fetchCategories(),
-    staleTime: Infinity,
-  });
-
   return (
     <>
       <SelectTrigger>
         <SelectValue placeholder="Select Category (None)" />
       </SelectTrigger>
       <SelectContent>
-        {isLoading && <p>Please wait...</p>}
-        {!isLoading &&
-          categories?.map((category) => {
-            return (
-              <SelectItem key={category} value={category}>
-                {category}
-              </SelectItem>
-            );
-          })}
+        {categories.map((category) => {
+          return (
+            <SelectItem key={category} value={category}>
+              {category}
+            </SelectItem>
+          );
+        })}
       </SelectContent>
     </>
   );

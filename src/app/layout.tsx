@@ -8,7 +8,6 @@ import GlassCard from '@/components/GlassCard';
 // import ZustandProvider from '../providers/zustand-provider';
 import TanStackProvider from '../providers/tanstack-provider';
 
-import { Toaster } from '@/components/ui/toaster';
 import { Suspense } from 'react';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -37,7 +36,6 @@ export default function RootLayout({
             </TanStackProvider>
           </section>
         </main>
-        <Toaster />
       </body>
     </html>
   );

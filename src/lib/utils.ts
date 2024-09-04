@@ -34,7 +34,7 @@ export function extractIngredients(ingredients: string): string[] {
 /** This extracts the data from the form in order to insert them as search
  * params into the URL.
  */
-export function createFetchRecipesParams(data: SearchFormValues): string {
+export function createRecipeParams(data: SearchFormValues): string {
   const { ingredients, category, area } = data;
 
   let params = '';
