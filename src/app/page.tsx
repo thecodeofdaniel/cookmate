@@ -1,11 +1,7 @@
-// 'use client';
-
-import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 
 import Search from './SearchForm';
 import Recipes from './Recipes';
-
-import { Suspense } from 'react';
 
 //------------------------------------------------------------------------------
 type Props = {
