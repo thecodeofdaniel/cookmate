@@ -36,7 +36,7 @@ export async function fetchRecipesProxy(
 
   const data = await response.json();
 
-  console.log('from API, recipes:', data);
+  // console.log('from API, recipes:', data);
   const recipes = data['recipes'];
 
   return recipes;

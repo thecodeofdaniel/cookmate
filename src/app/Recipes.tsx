@@ -24,7 +24,7 @@ type Props = {
 const AMOUNT = 8;
 
 export default function Recipes({ recipeParams, page, className }: Props) {
-  console.log('Render: Recipes');
+  // console.log('Render: Recipes');
 
   const { data: recipes = null, isLoading = false } = useQuery({
     queryKey: ['recipes', recipeParams],
