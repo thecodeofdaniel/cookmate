@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
 import { fetchRecipes } from '@/lib/fetch';
 
-import { RECIPES_URL } from '@/lib/constants';
-
 export async function POST(request: Request) {
   const data = await request.json();
   const params = data.searchParams;
@@ -23,7 +21,7 @@ export async function POST(request: Request) {
  * - a = area
  */
 function createFetchRecipesApiURL(params: string): string | '' {
-  let url = RECIPES_URL;
+  let url = `https://www.themealdb.com/api/json/v2/${process.env.API_KEY}/filter.php`;
   const prefix = params.substring(0, 3);
 
   switch (prefix) {
