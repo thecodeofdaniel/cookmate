@@ -1,6 +1,7 @@
 // Nextjs
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
+import { Metadata } from 'next';
 
 // Shadcn/UI
 import { Badge } from '@/components/ui/badge';
@@ -23,9 +24,23 @@ type Props = {
   searchParams: string;
 };
 
+// Function to generate metadata
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const recipe = await fetchSingleRecipe(params.idMeal);
+
+  if (!recipe) {
+    return {
+      title: 'Recipe Not Found',
+    };
+  }
+
+  return {
+    title: `${recipe.strMeal}`,
+  };
+}
+
 export default async function RecipeDetailsPage({ params }: Props) {
   const recipe = await fetchSingleRecipe(params.idMeal);
-  // const recipe = mealsData;
 
   if (!recipe) {
     notFound();

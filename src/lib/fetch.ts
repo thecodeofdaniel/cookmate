@@ -43,6 +43,8 @@ export async function fetchRecipesProxy(
 }
 
 export async function fetchSingleRecipe(id: string): Promise<TRecipe | null> {
+  if (isNaN(+id)) return null; // id must be a number, otherwise return null
+
   const url = SINGLE_RECIPE_URL + '?i=' + id;
 
   const response = await fetch(url, {
